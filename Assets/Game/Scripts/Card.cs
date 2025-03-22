@@ -5,6 +5,7 @@ public class Card {
 
     public Card(CardData cardData) {
         this.cardData = cardData;
+        Cost = cardData.Cost;
         Effect = cardData.Effect;
     }
 
@@ -15,5 +16,9 @@ public class Card {
 
     public void PerformEffect() {
         Debug.Log("Effect : " + Effect + "\nCost : " + Cost);
+    }
+
+    public override string ToString() {
+        return "Name : " + Title + ", Cost : " + Cost + "Effect : " + Effect;
     }
 }
