@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GameManager: MonoBehaviour {
+public class FightManager: MonoBehaviour {
     [SerializeField] private List<CardData> cardDatas;
     [SerializeField] private CardView cardView;
     [SerializeField] private HandManager handManager;
