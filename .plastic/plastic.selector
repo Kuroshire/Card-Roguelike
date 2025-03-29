@@ -1,0 +1,4 @@
+repository "Card Roguelike@Kuroshire@cloud"
+  path "/"
+    br "/main"
+    co "/main"
