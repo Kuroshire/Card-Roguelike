@@ -1,17 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class FightManager: MonoBehaviour {
-    [SerializeField] private List<CardData> cardDatas;
-    [SerializeField] private CardView cardView;
+    [SerializeField] private RuneCollection collection;
+    [SerializeField] private RuneView runeView;
     [SerializeField] private HandManager handManager;
     [SerializeField] private Transform cardSpawnPoint;
     [SerializeField] private int cardPerHand;
-    private Deck deck;
+    private Deck<Rune> deck;
 
     void Start()
     {
@@ -32,16 +29,17 @@ public class FightManager: MonoBehaviour {
     }
 
     private void CreateDeck(int size) {
-        List<Card> deckOfCards = new();
+        List<Rune> deckOfRunes = new();
+        int amountOfRunes = collection.RuneList.Count;
 
         for(int i = 0; i < size; i++) {
-            CardData data = cardDatas[Random.Range(0, cardDatas.Count)];
-            Card card = new(data);
+            RuneData data = collection.RuneList[Random.Range(0, amountOfRunes)];
+            Rune card = new(data);
 
-            deckOfCards.Add(card);
+            deckOfRunes.Add(card);
         }
 
-        deck = new(deckOfCards);
+        deck = new(deckOfRunes);
     }
 
     #region Draw Logic
@@ -61,27 +59,27 @@ public class FightManager: MonoBehaviour {
         isDrawing = true;
         int numberOfDraws = cardPerHand - handManager.NumberOfCardInHand;
         for(int i = 0; i < numberOfDraws; i++) {
-            DrawCard();
+            DrawOne();
             yield return new WaitForSeconds(0.1f);
         }
 
         isDrawing = false;
     }
 
-    public void DrawCard() {
+    public void DrawOne() {
         if(!handManager.CanDraw) {
             Debug.Log("Hand is full...");
             return;
         }
 
         //create card gameObject
-        Card drawnCard = deck.Draw();
-        if(drawnCard == null) {
+        Rune drawnRune = deck.Draw();
+        if(drawnRune == null) {
             return;
         }
         
-        CardView view = Instantiate(cardView, cardSpawnPoint.position, cardSpawnPoint.rotation);
-        view.Setup(drawnCard, handManager.SplinePositionY);
+        RuneView view = Instantiate(runeView, cardSpawnPoint.position, cardSpawnPoint.rotation);
+        view.Setup(drawnRune, handManager.SplinePositionY);
         
         handManager.OnDrawCard(view);
     }
@@ -89,7 +87,7 @@ public class FightManager: MonoBehaviour {
     #endregion
 
     public void UseSelectedCardList() {
-        List<CardView> selectedCardList = handManager.GetSelectedCardList();
+        List<RuneView> selectedCardList = handManager.GetSelectedRuneList();
 
         selectedCardList.ForEach((card) => {
             card.Use();
@@ -97,13 +95,11 @@ public class FightManager: MonoBehaviour {
     }
 
     public void ToggleCardHovered() {
-        CardView currentHover = MouseHoverDetection.CurrentHover;
+        IHoverable currentHover = MouseHoverDetection.CurrentHover;
         if(currentHover == null) {
             return;
         }
 
-        if(handManager.HasCardInHand(currentHover)) {
-            handManager.ToggleCardSelection(currentHover);
-        }
+        currentHover.OnClick();
     }
 }

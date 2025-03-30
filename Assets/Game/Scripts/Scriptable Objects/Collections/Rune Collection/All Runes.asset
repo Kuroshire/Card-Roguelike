@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1376afb10b0846344a110209a92407bf, type: 3}
+  m_Name: All Runes
+  m_EditorClassIdentifier: 
+  <RuneList>k__BackingField:
+  - {fileID: 11400000, guid: 36a19a9e096351747b69fc495aaa32af, type: 2}
+  - {fileID: 11400000, guid: 859340ed32e188f44a6a8789884e1f18, type: 2}
+  - {fileID: 11400000, guid: 8a409e6445686014ea0dda09f9e467bf, type: 2}
+  - {fileID: 11400000, guid: a8f710f35803e6d4ca0a63b7e3c1a153, type: 2}

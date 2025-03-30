@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67d7c8eba0feca545a9ea5f86b24fc0c, type: 3}
+  m_Name: Wind Rune
+  m_EditorClassIdentifier: 
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 81c7050d6a5eaba4da544c8236e12120, type: 3}
+  <Name>k__BackingField: Wind Rune
+  <Element>k__BackingField: 2
+  <Rarity>k__BackingField: 0
