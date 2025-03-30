@@ -3,7 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class CardView : MonoBehaviour
+public class CardView : MonoBehaviour, IHoverable
 {
     [SerializeField] private SpriteRenderer cardBackground, cardImage;
     [SerializeField] private Canvas canvas;
@@ -19,6 +19,8 @@ public class CardView : MonoBehaviour
     private int sortingOrder;
 
     public bool IsSelected {get; private set;} = false;
+
+    public Action OnSelectionChanged;
 
     public void Setup(Card card, float defaultPositionY) {
         this.card = card;
@@ -63,5 +65,15 @@ public class CardView : MonoBehaviour
 
     private void DestroyCardOnUse() {
         Destroy(gameObject);
+    }
+
+    public void OnClick() {
+        if(!IsSelected) {
+            Select();
+        } else {
+            Unselect();
+        }
+
+        OnSelectionChanged?.Invoke();
     }
 }

@@ -2,39 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deck
+public class Deck<T>
 {
-    private readonly List<Card> deck;
+    private readonly List<T> deck;
 
-    public Deck(List<Card> cards)
+    public Deck(List<T> cards)
     {
         deck = new();
         cards.ForEach(card => AddCardUnder(card));
     }
 
-    public Card DrawRandom() {
+    public T DrawRandom() {
         if(!CanDraw()) {
-            return null;
+            return default;
         }
 
-        Card drawnCard = deck[Random.Range(0, deck.Count)];
+        T drawnCard = deck[Random.Range(0, deck.Count)];
         deck.Remove(drawnCard);
         
         return drawnCard;
     }
 
-    public Card Draw() {
+    public T Draw() {
         if(!CanDraw()) {
-            return null;
+            return default;
         }
 
-        Card drawnCard = deck[0];
+        T drawnCard = deck[0];
         deck.Remove(drawnCard);
         
         return drawnCard;
     }
 
-    public void AddCardUnder(Card card) {
+    public void AddCardUnder(T card) {
         deck.Add(card);
     }
 

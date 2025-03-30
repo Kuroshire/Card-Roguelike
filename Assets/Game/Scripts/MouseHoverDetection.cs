@@ -17,8 +17,8 @@ public class MouseHoverDetection: MonoBehaviour {
 
     #endregion
 
-    [SerializeField] private CardView currentHover;
-    public static CardView CurrentHover => Instance.currentHover;
+    [SerializeField] private IHoverable currentHover;
+    public static IHoverable CurrentHover => Instance.currentHover;
 
     public event Action OnHoverChange;
 
@@ -27,14 +27,14 @@ public class MouseHoverDetection: MonoBehaviour {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-        CardView newHover = null;
+        IHoverable newHover = null;
         if (hit.collider != null)
         {
-            CardView card = hit.collider.GetComponentInParent<CardView>();
-            if(card) {
+            IHoverable card = hit.collider.GetComponentInParent<IHoverable>();
+            if(card != null) {
                 newHover = card;
             } else {
-                // found something else than a cardview collider
+                // found something else than a IHoverable collider
             }
         } else {
             newHover = null;
