@@ -15,3 +15,6 @@ MonoBehaviour:
   <SpellList>k__BackingField:
   - {fileID: 11400000, guid: 4c47bf21486c260488cc02a4bab93b9b, type: 2}
   - {fileID: 11400000, guid: 628d9c0732190e14f8e7dd4833bf2cda, type: 2}
+  - {fileID: 11400000, guid: d96a920178641454486a9bc99236e0ff, type: 2}
+  - {fileID: 11400000, guid: caf4c5d0f6990d641b04db0b9a886b2b, type: 2}
+  - {fileID: 11400000, guid: 5481e316ae0e5a84b8a37855fea23002, type: 2}

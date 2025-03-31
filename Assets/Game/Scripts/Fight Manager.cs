@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,11 @@ public class FightManager: MonoBehaviour {
     [SerializeField] private HandManager handManager;
     [SerializeField] private Transform cardSpawnPoint;
     [SerializeField] private int cardPerHand;
+
+    [SerializeField] private SpellManager spellManager;
     private Deck<Rune> deck;
+
+    public event Action<SpellData> OnSpellUse;
 
     void Start()
     {
@@ -33,7 +38,7 @@ public class FightManager: MonoBehaviour {
         int amountOfRunes = collection.RuneList.Count;
 
         for(int i = 0; i < size; i++) {
-            RuneData data = collection.RuneList[Random.Range(0, amountOfRunes)];
+            RuneData data = collection.RuneList[UnityEngine.Random.Range(0, amountOfRunes)];
             Rune card = new(data);
 
             deckOfRunes.Add(card);
@@ -86,12 +91,24 @@ public class FightManager: MonoBehaviour {
 
     #endregion
 
-    public void UseSelectedCardList() {
-        List<RuneView> selectedCardList = handManager.GetSelectedRuneList();
+    public void UseSelectedRuneList() {
+        List<RuneView> selectedRuneList = handManager.GetSelectedRuneList();
+        List<RuneElement> selectedRunes = handManager.GetElementsFromSelectedRunes();
 
-        selectedCardList.ForEach((card) => {
+
+        List<SpellData> foundSpells = spellManager.FindValidSpell(selectedRunes);
+        
+        selectedRuneList.ForEach((card) => {
             card.Use();
         });
+
+        if(foundSpells.Count == 0) {
+            //no matching spells...
+            Debug.Log("no spell found");
+            return;
+        }
+
+        OnSpellUse?.Invoke(foundSpells[0]);
     }
 
     public void ToggleCardHovered() {

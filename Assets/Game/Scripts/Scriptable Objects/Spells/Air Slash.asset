@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fff624135626440409268a03881a2ff4, type: 3}
-  m_Name: Fireball
+  m_Name: Air Slash
   m_EditorClassIdentifier: 
-  <RuneRecipe>k__BackingField: 0000000000000000
-  <Name>k__BackingField: FireBall
-  <Effect>k__BackingField: Throw a fireball and deal fire damage
+  <RuneRecipe>k__BackingField: 0200000002000000
+  <Name>k__BackingField: Air Slash
+  <Effect>k__BackingField: Throw air slashes to an enemy
