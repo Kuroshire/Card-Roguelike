@@ -770,7 +770,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 927969834}
         m_TargetAssemblyTypeName: FightManager, Assembly-CSharp
-        m_MethodName: UseSelectedRuneList
+        m_MethodName: UseSpell
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2390,6 +2390,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runeDisplayer: {fileID: 565247950}
   fightManager: {fileID: 927969834}
+  runeShowTime: 0.2
+  runeDownTime: 0.05
 --- !u!1 &2104144715
 GameObject:
   m_ObjectHideFlags: 0

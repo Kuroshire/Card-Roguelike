@@ -13,7 +13,9 @@ public class FightManager: MonoBehaviour {
     [SerializeField] private SpellManager spellManager;
     private Deck<Rune> deck;
 
+    public event Action<List<RuneElement>> OnSelectedCardUsed;
     public event Action<SpellData> OnSpellUse;
+    public event Action OnSpellFailed;
 
     void Start()
     {
@@ -91,7 +93,7 @@ public class FightManager: MonoBehaviour {
 
     #endregion
 
-    public void UseSelectedRuneList() {
+    public void UseSpell() {
         List<RuneView> selectedRuneList = handManager.GetSelectedRuneList();
         List<RuneElement> selectedRunes = handManager.GetElementsFromSelectedRunes();
 
@@ -102,9 +104,12 @@ public class FightManager: MonoBehaviour {
             card.Use();
         });
 
+        OnSelectedCardUsed?.Invoke(selectedRunes);
+
         if(foundSpells.Count == 0) {
             //no matching spells...
             Debug.Log("no spell found");
+            OnSpellFailed?.Invoke();
             return;
         }
 

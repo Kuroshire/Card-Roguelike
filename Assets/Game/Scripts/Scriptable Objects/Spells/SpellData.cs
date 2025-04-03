@@ -15,7 +15,7 @@ public class SpellData : ScriptableObject
         }
 
         if(givenRecipe.Count != RuneRecipe.Count) {
-            Debug.Log("recipes are of different size, cannot be identical...");
+            // Debug.Log("recipes are of different size, cannot be identical...");
             return false;
         }
 

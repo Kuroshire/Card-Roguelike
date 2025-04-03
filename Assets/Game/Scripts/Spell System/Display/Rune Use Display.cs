@@ -7,16 +7,16 @@ public class RuneUseDisplay : MonoBehaviour
     [SerializeField] private SpriteRenderer runeDisplayer;
     [SerializeField] private FightManager fightManager;
 
+    [SerializeField] private float runeShowTime = 0.2f, runeDownTime = 0.1f;
+
     void Start()
     {
         runeDisplayer.gameObject.SetActive(false);
-        fightManager.OnSpellUse += ShowSpellRunes;
+        fightManager.OnSelectedCardUsed += ShowSpellRunes;
     }
 
-    public void ShowSpellRunes(SpellData spell) {
-        List<RuneElement> recipe = spell.RuneRecipe;
-
-        StartCoroutine(DisplayRuneList(recipe));
+    public void ShowSpellRunes(List<RuneElement> runeList) {
+        StartCoroutine(DisplayRuneList(runeList));
     }
 
     private void SetRuneToDisplay(RuneElement element) {
@@ -36,9 +36,9 @@ public class RuneUseDisplay : MonoBehaviour
         foreach(RuneElement rune in runes) {
             SetRuneToDisplay(rune);
             ShowRuneDisplay();
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(runeShowTime);
             HideRuneDisplay();
-            yield return new WaitForSeconds(.05f);
+            yield return new WaitForSeconds(runeDownTime);
         }
     }
 }
