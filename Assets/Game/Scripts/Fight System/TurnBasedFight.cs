@@ -29,16 +29,18 @@ public class TurnBasedFight: MonoBehaviour
 
         foreach(IFighter fighter in fighters) {
             fighter.OnAttack += MakeMove;
+            fighter.OnFighterDeath += RemoveDeadFighters;
         }
 
         Debug.Log("fight started...");
         StartCoroutine(FightLoop());
     }
 
+    #region FIGHT LOGIC
     public IEnumerator FightLoop() {
         isFightOnGoing = true;
         while(!IsFightOver()) {
-            Debug.Log("It's " + CurrentFighter + " turn...");
+            // Debug.Log("It's " + CurrentFighter + " turn...");
             yield return new WaitUntil(() => currentFighterPlayed);
             Debug.Log("-------------- TURN PLAYED ! --------------");
             NextFighter();
@@ -92,9 +94,28 @@ public class TurnBasedFight: MonoBehaviour
         // } while(!CurrentFighter.IsAlive());
     }
 
-    public void MakeMove() {
+    private void MakeMove() {
         Debug.Log(CurrentFighter + " just attacked...");
         currentFighterPlayed = true;
+    }
+
+    private void RemoveDeadFighters() {
+        List<IFighter> deadFighters= fighters.FindAll(fighter => fighter.IsAlive() == false);
+        foreach(IFighter fighter in deadFighters) {
+            fighters.Remove(fighter);
+            fighter.OnFighterDeath -= RemoveDeadFighters;
+        }
+
+    }
+
+    #endregion
+
+    public List<IFighter> GetFightersFromTeam(FighterTeam team) {
+        return fighters.FindAll(fighter => fighter.IsAlive() && fighter.Team == team);
+    }
+
+    public List<IFighter> GetFightersFromMultipleTeams(List<FighterTeam> teamList) {
+        return fighters.FindAll(fighter => fighter.IsAlive() && teamList.Contains(fighter.Team));
     }
 }
 

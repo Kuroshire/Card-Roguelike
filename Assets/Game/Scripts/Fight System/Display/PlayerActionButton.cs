@@ -4,29 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class FighterActionButton : MonoBehaviour
+public class PlayerActionButton : MonoBehaviour
 {
     [SerializeField] IFighter fighter;
     [SerializeField] IFighter target;
 
-    [SerializeField] bool isAutomaticFighter;
-
     void Start()
     {
-
-        if(isAutomaticFighter) {
-            TurnBasedManager.TurnBasedFight.OnCurrentFighterChange += AutomaticAttackAction;
-            gameObject.SetActive(false);
-        } else {
-            SetButtonActive();
-            TurnBasedManager.TurnBasedFight.OnCurrentFighterChange += SetButtonActive;
-        }
-    }
-
-    private void AutomaticAttackAction() {
-        if(TurnBasedManager.IsPlaying(fighter)) {
-            fighter.Attack(target, 20);
-        }
+        SetButtonActive();
+        TurnBasedManager.TurnBasedFight.OnCurrentFighterChange += SetButtonActive;
     }
 
     //used when button is pressed.

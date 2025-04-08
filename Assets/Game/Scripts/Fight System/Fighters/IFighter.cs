@@ -11,6 +11,7 @@ public abstract class IFighter : MonoBehaviour {
     public Action OnAttack;
 
     public Action OnCurrentHPChange;
+    public Action OnFighterDeath;
 
     public int CurrentHP => currentHP;
     public int MaxHP => maxHP;
@@ -28,7 +29,7 @@ public abstract class IFighter : MonoBehaviour {
     public void DefaultAttackBehaviour(IFighter target, int amount) {
         target.TakeDamage(amount);
 
-        Debug.Log(name + " attacked...");
+        // Debug.Log(name + " attacked...");
         OnAttack?.Invoke();
     }
 
@@ -42,7 +43,8 @@ public abstract class IFighter : MonoBehaviour {
     }
 
     public void Die() {
-        Debug.Log("player died...");
+        Debug.Log("fighter died...");
         isAlive = false;
+        OnFighterDeath?.Invoke();
     }
 }
