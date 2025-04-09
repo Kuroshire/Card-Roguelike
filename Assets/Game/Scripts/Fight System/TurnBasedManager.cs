@@ -19,7 +19,9 @@ public class TurnBasedManager : MonoBehaviour
     #endregion
 
     [SerializeField] private TurnBasedFight turnBasedFight;
+    [SerializeField] private TargetSelector targetSelector;
     public static TurnBasedFight TurnBasedFight => Instance.turnBasedFight;
+    public static TargetSelector TargetSelector => Instance.targetSelector;
 
     void Start()
     {
