@@ -14,6 +14,8 @@ public class TargetSelector : MonoBehaviour
 
     public bool IsTargeting {get; private set;}
 
+    public bool CanTarget => validTarget.Count == 0;
+
     void Start()
     {
         StopTargeting();
@@ -22,7 +24,7 @@ public class TargetSelector : MonoBehaviour
     public void StartTargeting(FighterTeam team) {
         GetAllPossibleTargets(team);
         if(validTarget.Count == 0) {
-            Debug.Log("NO TARGET");
+            Debug.LogWarning("NO TARGET");
             throw new Exception("No target to attack");
         }
 
@@ -50,25 +52,6 @@ public class TargetSelector : MonoBehaviour
     }
 
     #region INPUTS FUNCTIONS
-
-    void Update()
-    {
-        if(validTarget.Count == 0) {
-            return;
-        }
-
-        if(Input.GetKeyDown(KeyCode.UpArrow)) {
-            PreviousTarget();
-        }
-
-        if(Input.GetKeyDown(KeyCode.DownArrow)) {
-            NextTarget();
-        }
-
-        if(Input.GetKeyDown(KeyCode.P)) {
-            ConfirmTarget();
-        }
-    }
 
     public void NextTarget() {
         currentTargetIndex++;

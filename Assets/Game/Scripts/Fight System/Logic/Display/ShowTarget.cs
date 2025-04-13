@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShowTarget : MonoBehaviour
 {
-    [SerializeField] private IFighter currentTarget;
+    private IFighter currentTarget;
 
     public void SetTarget(IFighter fighter) {
         currentTarget = fighter;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,7 +30,12 @@ public class PlayerActionButton : MonoBehaviour
         if(IsTargeting) {
             TurnBasedManager.TargetSelector.StopTargeting();
         } else {
-            TurnBasedManager.TargetSelector.StartTargeting(FighterTeam.Monsters);
+            try {
+                TurnBasedManager.TargetSelector.StartTargeting(FighterTeam.Monsters);
+            } catch (Exception) {
+                //happens when there is no more targets.
+                gameObject.SetActive(false);
+            }
         }
         SetButtonText();
     }
