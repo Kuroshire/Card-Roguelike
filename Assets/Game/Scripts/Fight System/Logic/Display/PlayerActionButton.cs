@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class PlayerActionButton : MonoBehaviour
 {
     [SerializeField] IFighter fighter;
-    [SerializeField] IFighter target;
     [SerializeField] TextMeshProUGUI buttonText;
     [SerializeField] string cancelMessage = "Cancel";
 
