@@ -5,14 +5,13 @@ using UnityEngine;
 public class RuneUseDisplay : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer runeDisplayer;
-    [SerializeField] private FightManager fightManager;
 
     [SerializeField] private float runeShowTime = 0.2f, runeDownTime = 0.1f;
 
     void Start()
     {
         runeDisplayer.gameObject.SetActive(false);
-        fightManager.OnSelectedCardUsed += ShowSpellRunes;
+        SpellFightManager.Instance.OnSelectedCardUsed += ShowSpellRunes;
     }
 
     public void ShowSpellRunes(List<RuneElement> runeList) {
@@ -20,7 +19,7 @@ public class RuneUseDisplay : MonoBehaviour
     }
 
     private void SetRuneToDisplay(RuneElement element) {
-        Sprite runeSprite = CollectionGameManager.GetSpriteFromRuneElement(element);
+        Sprite runeSprite = GameCollections.GetSpriteFromRuneElement(element);
         runeDisplayer.sprite = runeSprite;
     }
 

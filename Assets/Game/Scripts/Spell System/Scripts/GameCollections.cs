@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-public class CollectionGameManager: MonoBehaviour {
+public class GameCollections: MonoBehaviour {
     #region Singleton
 
-    public static CollectionGameManager Instance { get; private set; }
+    public static GameCollections Instance { get; private set; }
 
     private void Awake() {
         if (Instance != null && Instance != this) {
@@ -28,6 +28,5 @@ public class CollectionGameManager: MonoBehaviour {
         return runeData.Sprite;
 
     }
-
 
 }

@@ -3,14 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FightManager: MonoBehaviour {
+public class SpellFightManager: MonoBehaviour {
+    #region Singleton
+
+    public static SpellFightManager Instance { get; private set; }
+
+    private void Awake() {
+        if (Instance != null && Instance != this) {
+            Destroy(this);
+        } else {
+            Instance = this;
+        }
+    }
+
+    #endregion
+
     [SerializeField] private RuneCollection collection;
     [SerializeField] private RuneView runeView;
     [SerializeField] private HandManager handManager;
+    [SerializeField] private HandCardsPositionHandler cardsPositionHandler;
     [SerializeField] private Transform cardSpawnPoint;
     [SerializeField] private int cardPerHand;
 
     [SerializeField] private SpellManager spellManager;
+
     private Deck<Rune> deck;
 
     public event Action<List<RuneElement>> OnSelectedCardUsed;
@@ -86,7 +102,7 @@ public class FightManager: MonoBehaviour {
         }
         
         RuneView view = Instantiate(runeView, cardSpawnPoint.position, cardSpawnPoint.rotation);
-        view.Setup(drawnRune, handManager.SplinePositionY);
+        view.Setup(drawnRune, cardsPositionHandler.SplinePositionY);
         
         handManager.OnDrawCard(view);
     }

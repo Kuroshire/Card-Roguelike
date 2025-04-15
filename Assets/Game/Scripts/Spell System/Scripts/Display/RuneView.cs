@@ -5,6 +5,7 @@ using UnityEngine;
 public class RuneView : MonoBehaviour, IHoverable
 {
     [SerializeField] private SpriteRenderer runeBackground, runeImage;
+    [SerializeField] private Transform cardTransform;
 
     [SerializeField] private Transform isSelectedPosition;
     [SerializeField] private float defaultPositionY;
@@ -42,22 +43,22 @@ public class RuneView : MonoBehaviour, IHoverable
         rune.PerformEffect();
         OnRuneUsed?.Invoke(this);
 
-        DestroyruneOnUse();
+        DestroyRuneOnUse();
     }
 
     public void Select()
     {
-        transform.DOMoveY(isSelectedPosition.position.y, 0.25f);
+        cardTransform.DOMoveY(isSelectedPosition.position.y, 0.25f);
         IsSelected = true;
     }
 
     public void Unselect()
     {
-        transform.DOMoveY(defaultPositionY, 0.25f);
+        cardTransform.DOMoveY(defaultPositionY, 0.25f);
         IsSelected = false;
     }
 
-    private void DestroyruneOnUse() {
+    private void DestroyRuneOnUse() {
         Destroy(gameObject);
     }
 
@@ -69,5 +70,10 @@ public class RuneView : MonoBehaviour, IHoverable
         }
 
         OnSelectionChanged?.Invoke();
+    }
+
+    public void SetPositionY() {
+        float position = IsSelected ? isSelectedPosition.position.y : defaultPositionY;
+        cardTransform.DOMoveY(position, 0.25f);
     }
 }
