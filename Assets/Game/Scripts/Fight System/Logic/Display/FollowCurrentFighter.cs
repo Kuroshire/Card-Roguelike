@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowCurrentFighter : MonoBehaviour
+public class FollowCurrentFighter : MonoBehaviour
 {
     private TurnBasedFight fightHandler;
 
-    void Awake()
+    void Start()
     {
-        fightHandler = TurnBasedManager.TurnBasedFight;
-        fightHandler.OnCurrentFighterChange += UpdateCurrentFighter;
+        fightHandler = FightSystemManager.TurnBasedFight;
+
+        fightHandler.OnFightStart += TurnOn;
         fightHandler.OnFightOver += TurnOff;
-        
-        TurnOn();
+        fightHandler.OnCurrentFighterChange += UpdateCurrentFighter;
     }
 
-
     public void UpdateCurrentFighter() {
-        transform.position = fightHandler.CurrentFighter.transform.position;
+        transform.position = fightHandler.CurrentFighterPosition;
     }
 
     private void TurnOff() {

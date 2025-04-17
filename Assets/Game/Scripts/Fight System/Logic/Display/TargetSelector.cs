@@ -42,12 +42,12 @@ public class TargetSelector : MonoBehaviour
     }
 
     private void GetAllPossibleTargets(FighterTeam team) {
-        List<IFighter> foundTargets = TurnBasedManager.TurnBasedFight.GetFightersFromTeam(team);
+        List<IFighter> foundTargets = FightSystemManager.TurnBasedFight.GetFightersFromTeam(team);
         validTarget = foundTargets;
     }
 
     private void GetAllPossibleTargets(List<FighterTeam> teamList) {
-        List<IFighter> foundTargets = TurnBasedManager.TurnBasedFight.GetFightersFromMultipleTeams(teamList);
+        List<IFighter> foundTargets = FightSystemManager.TurnBasedFight.GetFightersFromMultipleTeams(teamList);
         validTarget = foundTargets;
     }
 

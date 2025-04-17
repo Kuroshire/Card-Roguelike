@@ -6,7 +6,7 @@ using System;
 public class TurnBasedFight: MonoBehaviour
 {
     [SerializeField] private List<IFighter> fighters = new();
-
+    [SerializeField] private float timeBetweenTurns = .5f;
 
     private bool isFightOnGoing = false;
 
@@ -14,9 +14,10 @@ public class TurnBasedFight: MonoBehaviour
     private bool currentFighterPlayed = false;
 
     public event Action OnCurrentFighterChange;
-    public event Action OnFightOver;
+    public event Action OnFightStart, OnFightOver;
 
     public IFighter CurrentFighter => fighters[currentFighterIndex];
+    public Vector3 CurrentFighterPosition => CurrentFighter.transform.position;
     public FighterTeam WinningTeam {get; private set;} = FighterTeam.None;
 
 
@@ -33,6 +34,8 @@ public class TurnBasedFight: MonoBehaviour
         }
 
         Debug.Log("fight started...");
+        OnFightStart?.Invoke();
+
         StartCoroutine(FightLoop());
     }
 
@@ -43,6 +46,7 @@ public class TurnBasedFight: MonoBehaviour
             // Debug.Log("It's " + CurrentFighter + " turn...");
             yield return new WaitUntil(() => currentFighterPlayed);
             Debug.Log("-------------- TURN PLAYED ! --------------");
+            yield return new WaitForSeconds(timeBetweenTurns);
             NextFighter();
         }
 
@@ -57,7 +61,6 @@ public class TurnBasedFight: MonoBehaviour
 
         foreach(IFighter fighter in fighters) {
             if(fighter.IsAlive()) {
-                Debug.Log("It's alive !");
                 switch(fighter.Team) {
                     case FighterTeam.Players:
                         playerLeft++;

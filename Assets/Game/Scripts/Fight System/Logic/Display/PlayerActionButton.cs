@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,29 +6,31 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class PlayerActionButton : MonoBehaviour
 {
-    [SerializeField] IFighter fighter;
-    [SerializeField] TextMeshProUGUI buttonText;
-    [SerializeField] string cancelMessage = "Cancel";
+    [SerializeField] protected PlayerFighter fighter;
+    [SerializeField] protected TextMeshProUGUI buttonText;
+    [SerializeField] protected string cancelMessage = "Cancel";
+    [SerializeField] private IFighterAttack attack;
 
-    private string defaultMessage;
-    private bool IsTargeting => TurnBasedManager.TargetSelector.IsTargeting;
+
+    protected string defaultMessage;
+    protected bool IsTargeting => FightSystemManager.TargetSelector.IsTargeting;
 
     void Start()
     {
         defaultMessage = buttonText.text;
         SetButtonActive();
 
-        TurnBasedManager.TurnBasedFight.OnCurrentFighterChange += SetButtonActive;
-        TurnBasedManager.TargetSelector.OnTargetConfirmed += AttackSelectedTarget;
+        FightSystemManager.TurnBasedFight.OnCurrentFighterChange += SetButtonActive;
+        FightSystemManager.TargetSelector.OnTargetConfirmed += AttackSelectedTarget;
     }
 
     //used when button is pressed.
     public void FighterAttackAction() {
         if(IsTargeting) {
-            TurnBasedManager.TargetSelector.StopTargeting();
+            FightSystemManager.TargetSelector.StopTargeting();
         } else {
             try {
-                TurnBasedManager.TargetSelector.StartTargeting(FighterTeam.Monsters);
+                FightSystemManager.TargetSelector.StartTargeting(FighterTeam.Monsters);
             } catch (Exception) {
                 //happens when there is no more targets.
                 gameObject.SetActive(false);
@@ -39,19 +39,20 @@ public class PlayerActionButton : MonoBehaviour
         SetButtonText();
     }
 
-    private void AttackSelectedTarget(IFighter target) {
-        if(TurnBasedManager.IsPlaying(fighter)) {
-            fighter.Attack(target, 20);
+    //This is a default action the player can do
+    protected void AttackSelectedTarget(IFighter target) {
+        if(FightSystemManager.IsPlaying(fighter)) {
+            fighter.Attack(target, attack);
         }
     }
 
-    private void SetButtonActive() {
-        bool isPlaying = TurnBasedManager.IsPlaying(fighter);
+    protected void SetButtonActive() {
+        bool isPlaying = FightSystemManager.IsPlaying(fighter);
         gameObject.SetActive(isPlaying);
         SetButtonText();
     }
 
-    private void SetButtonText() {
+    protected void SetButtonText() {
         buttonText.text = IsTargeting ? cancelMessage : defaultMessage;
     } 
 }

@@ -24,14 +24,8 @@ public abstract class IFighter : MonoBehaviour {
         return isAlive;
     }
 
-    public abstract void Attack(IFighter target, int amount);
+    public abstract void Attack(IFighter target, IFighterAttack attack);
 
-    public void DefaultAttackBehaviour(IFighter target, int amount) {
-        target.TakeDamage(amount);
-
-        // Debug.Log(name + " attacked...");
-        OnAttack?.Invoke();
-    }
 
     public void TakeDamage(int amount) {
         currentHP -= amount;

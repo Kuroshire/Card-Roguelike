@@ -9,6 +9,8 @@ public class MonsterFighter: IFighter {
 
     [SerializeField] private IFighter target;
     [SerializeField] private int attackDamage;
+    public int AttackDamage => attackDamage;
+    [SerializeField] private IFighterAttack attack;
 
     public int TurnsLeftBeforeAttack => turnsLeft;
 
@@ -19,7 +21,7 @@ public class MonsterFighter: IFighter {
     void Start()
     {
         SetTurnsLeft(turnsBetweenAttacks);
-        TurnBasedManager.TurnBasedFight.OnCurrentFighterChange += AutomaticAttackAction;
+        FightSystemManager.TurnBasedFight.OnCurrentFighterChange += AutomaticAttackAction;
         OnFighterDeath += DeathBehaviour;
 
     }
@@ -29,22 +31,22 @@ public class MonsterFighter: IFighter {
         OnTurnsLeftUpdate?.Invoke();
     }
 
-    public override void Attack(IFighter target, int damage) {
-        StartCoroutine(ThinkingTime(target, damage));
+    public override void Attack(IFighter target, IFighterAttack attack) {
+        StartCoroutine(ThinkingTime(target, attack));
     }
 
     private void AutomaticAttackAction() {
-        if(TurnBasedManager.IsPlaying(this)) {
-            StartCoroutine(ThinkingTime(target, attackDamage));
+        if(FightSystemManager.IsPlaying(this)) {
+            StartCoroutine(ThinkingTime(target, attack));
         }
     }
 
-    private IEnumerator ThinkingTime(IFighter target, int damage) {
+    private IEnumerator ThinkingTime(IFighter target, IFighterAttack attack) {
         yield return new WaitForSeconds(.5f);
-        AttackBehaviour(target, damage);
+        AttackBehaviour(target, attack);
     }
 
-    private void AttackBehaviour(IFighter target, int damage) {
+    private void AttackBehaviour(IFighter target, IFighterAttack attack) {
         if(turnsLeft > 0) {
             Debug.Log("monster won't attack this turn...");
             SetTurnsLeft(turnsLeft - 1);
@@ -52,7 +54,17 @@ public class MonsterFighter: IFighter {
             return;
         }
 
-        DefaultAttackBehaviour(target, damage);
+        StartCoroutine(AttackAnimation(target, attack));
+    }
+
+    private IEnumerator AttackAnimation(IFighter target, IFighterAttack attack) {
+        IFighterAttack instance = Instantiate(attack);
+        instance.Initialize(this, target);
+        int attackDamage = attack.Damage;
+        yield return new WaitForSeconds(instance.AnimationTime);
+        target.TakeDamage(attack.Damage);
+        OnAttack?.Invoke();
+
         SetTurnsLeft(turnsBetweenAttacks);
     }
 

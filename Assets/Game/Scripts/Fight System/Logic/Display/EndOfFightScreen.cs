@@ -9,12 +9,12 @@ public class EndOfFightScreen : MonoBehaviour
 
     void Start()
     {
-        TurnBasedManager.TurnBasedFight.OnFightOver += ActivateEndOfFight;
+        FightSystemManager.TurnBasedFight.OnFightOver += ActivateEndOfFight;
         TurnOff();
     }
 
     public void ActivateEndOfFight() {
-        FighterTeam winners = TurnBasedManager.TurnBasedFight.WinningTeam;
+        FighterTeam winners = FightSystemManager.TurnBasedFight.WinningTeam;
 
         switch(winners) {
             case FighterTeam.Players:

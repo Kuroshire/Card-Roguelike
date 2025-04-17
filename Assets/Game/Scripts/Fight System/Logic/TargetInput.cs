@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TargetInput : MonoBehaviour
 {
-    public TargetSelector TargetSelector => TurnBasedManager.TargetSelector;
+    public TargetSelector TargetSelector => FightSystemManager.TargetSelector;
 
     [SerializeField] private KeyCode previousTargetKey = KeyCode.UpArrow, nextTargetKey = KeyCode.DownArrow, confirmTargetKey = KeyCode.P;
 
@@ -12,6 +12,10 @@ public class TargetInput : MonoBehaviour
     void Update()
     {
         if(TargetSelector.CanTarget) {
+            return;
+        }
+
+        if(!TargetSelector.IsTargeting) {
             return;
         }
 

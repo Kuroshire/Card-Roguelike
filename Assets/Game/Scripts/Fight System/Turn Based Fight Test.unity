@@ -1172,10 +1172,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  turnsBetweenAttacks: 5
+  turnsBetweenAttacks: 1
   turnsLeft: 0
   target: {fileID: 1863795474}
   attackDamage: 50
+  attack: {fileID: 4371550056818650142, guid: fc5ff80d2d5ed4544bc3e628a343094b, type: 3}
 --- !u!212 &919568167
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1759,9 +1760,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fighter: {fileID: 1863795474}
-  target: {fileID: 655848062}
   buttonText: {fileID: 668977041}
   cancelMessage: Cancel
+  attack: {fileID: 6069241565976636230, guid: b8eca6c3e9cf1034f8e9fa945392a99c, type: 3}
 --- !u!1 &2029925856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,9 +1988,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1249963338648295263, guid: 790285a14e8b318498bac156d0985133, type: 3}
+      propertyPath: attack
+      value: 
+      objectReference: {fileID: 4860021224643447641, guid: ec17d1f439c118e4eb20422a61e15438, type: 3}
+    - target: {fileID: 1249963338648295263, guid: 790285a14e8b318498bac156d0985133, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1863795474}
+    - target: {fileID: 1249963338648295263, guid: 790285a14e8b318498bac156d0985133, type: 3}
+      propertyPath: turnsBetweenAttacks
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1456182776962339579, guid: 790285a14e8b318498bac156d0985133, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -2087,13 +2096,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3126079701007293009, guid: 3a7a04dffef800a4b94fcf50067e814f, type: 3}
-      propertyPath: confirmTargetKey
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 5301349578415883250, guid: 3a7a04dffef800a4b94fcf50067e814f, type: 3}
       propertyPath: m_Name
       value: Fight Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6473774196340664576, guid: 3a7a04dffef800a4b94fcf50067e814f, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1863795474}
+    - target: {fileID: 8040610282684189046, guid: 3a7a04dffef800a4b94fcf50067e814f, type: 3}
+      propertyPath: timeBetweenTurns
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 8040610282684189046, guid: 3a7a04dffef800a4b94fcf50067e814f, type: 3}
       propertyPath: fighters.Array.data[0]
@@ -2172,6 +2185,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7788939101433703673, guid: 0046994c7de00224eaaefc8f6b96c062, type: 3}
+      propertyPath: currentAttack
+      value: 
+      objectReference: {fileID: 6069241565976636230, guid: b8eca6c3e9cf1034f8e9fa945392a99c, type: 3}
+    - target: {fileID: 7788939101433703673, guid: 0046994c7de00224eaaefc8f6b96c062, type: 3}
+      propertyPath: FireballPrefab
+      value: 
+      objectReference: {fileID: 4371550056818650142, guid: fc5ff80d2d5ed4544bc3e628a343094b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2185,6 +2206,6 @@ SceneRoots:
   - {fileID: 99052383}
   - {fileID: 2239373061478692217}
   - {fileID: 57323675}
-  - {fileID: 1838686679}
   - {fileID: 6340390668737004753}
   - {fileID: 193792930}
+  - {fileID: 1838686679}
