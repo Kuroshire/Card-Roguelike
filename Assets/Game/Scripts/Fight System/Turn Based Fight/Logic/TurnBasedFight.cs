@@ -113,6 +113,9 @@ public class TurnBasedFight: MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// returns the list of fighters within the given team who are still alive.
+    /// </summary>
     public List<IFighter> GetFightersFromTeam(FighterTeam team) {
         return fighters.FindAll(fighter => fighter.IsAlive() && fighter.Team == team);
     }

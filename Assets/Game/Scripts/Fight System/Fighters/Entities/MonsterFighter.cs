@@ -5,12 +5,9 @@ using UnityEngine;
 public class MonsterFighter: IFighter {
 
     [SerializeField] private int turnsBetweenAttacks;
-    [SerializeField] private int turnsLeft;
+    private int turnsLeft;
 
-    [SerializeField] private IFighter target;
-    [SerializeField] private int attackDamage;
-    public int AttackDamage => attackDamage;
-    [SerializeField] private IFighterAttack attack;
+    [SerializeField] private MonsterBehaviour behaviour;
 
     public int TurnsLeftBeforeAttack => turnsLeft;
 
@@ -31,22 +28,21 @@ public class MonsterFighter: IFighter {
         OnTurnsLeftUpdate?.Invoke();
     }
 
-    public override void Attack(IFighter target, IFighterAttack attack) {
-        StartCoroutine(ThinkingTime(target, attack));
-    }
-
     private void AutomaticAttackAction() {
         if(FightSystemManager.IsPlaying(this)) {
-            StartCoroutine(ThinkingTime(target, attack));
+            StartCoroutine(ThinkingTime());
         }
     }
 
-    private IEnumerator ThinkingTime(IFighter target, IFighterAttack attack) {
+    private IEnumerator ThinkingTime() {
+        IFighterAttack attack = behaviour.ChooseRandomAttack();
+        IFighter target = behaviour.ChoosePlayerTargetRandomly();
+
         yield return new WaitForSeconds(.5f);
-        AttackBehaviour(target, attack);
+        Attack(target, attack);
     }
 
-    private void AttackBehaviour(IFighter target, IFighterAttack attack) {
+    public override void Attack(IFighter target, IFighterAttack attack) {
         if(turnsLeft > 0) {
             Debug.Log("monster won't attack this turn...");
             SetTurnsLeft(turnsLeft - 1);

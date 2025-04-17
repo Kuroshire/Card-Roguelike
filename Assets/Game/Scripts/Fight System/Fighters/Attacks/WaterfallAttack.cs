@@ -9,7 +9,7 @@ public class WaterfallAttack : IFighterAttack
     public override float AnimationTime => travelTime + scaleUpTime + scaleDownTime + .1f;
 
     public override void Initialize(IFighter user, IFighter target) {
-        transform.position = startingPosition.position;
+        transform.position = new Vector2(target.transform.position.x, startingPosition.position.y);
 
         StartCoroutine(Animate(target));
     }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8084227307371924793}
   - component: {fileID: 6112738879923595764}
   - component: {fileID: 1249963338648295263}
+  - component: {fileID: 4595249890478987067}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -101,8 +102,21 @@ MonoBehaviour:
   maxHP: 100
   turnsBetweenAttacks: 3
   turnsLeft: 0
-  target: {fileID: 0}
-  attackDamage: 15
+  behaviour: {fileID: 4595249890478987067}
+--- !u!114 &4595249890478987067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456182776962339579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334fc54dba830c348a6a01174dd79e83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackList:
+  - {fileID: 4860021224643447641, guid: ec17d1f439c118e4eb20422a61e15438, type: 3}
 --- !u!1 &2948230390511336611
 GameObject:
   m_ObjectHideFlags: 0
