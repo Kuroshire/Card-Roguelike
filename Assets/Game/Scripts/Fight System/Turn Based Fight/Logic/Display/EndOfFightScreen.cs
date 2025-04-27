@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class EndOfFightScreen : MonoBehaviour
 {
+    [SerializeField] private GameObject endOfFightScreen;
     [SerializeField] private TextMeshProUGUI winnerText;
-    [SerializeField] private Image backgroundImage;
 
     void Start()
     {
@@ -32,13 +32,11 @@ public class EndOfFightScreen : MonoBehaviour
     }
 
     public void TurnOff() {
-        backgroundImage.gameObject.SetActive(false);
-        winnerText.gameObject.SetActive(false);
+        endOfFightScreen.SetActive(false);
     }
 
     public void TurnOn() {
-        backgroundImage.gameObject.SetActive(true);
-        winnerText.gameObject.SetActive(true);
+        endOfFightScreen.SetActive(true);
     }
 
 }

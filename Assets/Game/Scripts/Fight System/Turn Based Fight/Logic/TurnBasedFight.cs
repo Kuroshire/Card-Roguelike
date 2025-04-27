@@ -5,7 +5,7 @@ using System;
 
 public class TurnBasedFight: MonoBehaviour
 {
-    [SerializeField] private List<IFighter> fighters = new();
+    private List<IFighter> fighters = new();
     [SerializeField] private float timeBetweenTurns = .5f;
 
     private bool isFightOnGoing = false;
@@ -16,27 +16,55 @@ public class TurnBasedFight: MonoBehaviour
     public event Action OnCurrentFighterChange;
     public event Action OnFightStart, OnFightOver;
 
-    public IFighter CurrentFighter => fighters[currentFighterIndex];
-    public Vector3 CurrentFighterPosition => CurrentFighter.transform.position;
+    public Vector3 CurrentFighterPosition => GetCurrentFighter().transform.position;
     public FighterTeam WinningTeam {get; private set;} = FighterTeam.None;
 
+    private bool isInitialized = false;
+    public void InitializeFight() {
+        fighters = FightSystemManager.FighterHandler.AllFighters;
+        isInitialized = true;
+    }
+
+    /// <summary>
+    /// return current fighter. If fighter isn't started yet, it initialize the fight.
+    /// </summary>
+    /// <returns></returns>
+    public IFighter GetCurrentFighter() {
+        if(!isInitialized) {
+            Debug.Log("Fight isn't initialized !");
+            InitializeFight();
+        }
+
+        return fighters[currentFighterIndex];
+    }
 
     public void StartFight()
     {
+        if(!isInitialized) {
+            InitializeFight();
+        }
+
         if(isFightOnGoing) {
             Debug.Log("fight already started...");
             return;
         }
 
         foreach(IFighter fighter in fighters) {
-            fighter.OnAttack += MakeMove;
-            fighter.OnFighterDeath += RemoveDeadFighters;
+            SetFighterActions(fighter);
         }
 
         Debug.Log("fight started...");
         OnFightStart?.Invoke();
 
         StartCoroutine(FightLoop());
+    }
+
+    public void EndFight() {
+        Debug.Log("Fight is over !");
+        isFightOnGoing = false;
+        isInitialized = false;
+
+        OnFightOver?.Invoke();
     }
 
     #region FIGHT LOGIC
@@ -50,9 +78,7 @@ public class TurnBasedFight: MonoBehaviour
             NextFighter();
         }
 
-        Debug.Log("Fight is over !");
-        OnFightOver?.Invoke();
-        isFightOnGoing = false;
+        EndFight();
     }
 
     private bool IsFightOver() {
@@ -98,17 +124,27 @@ public class TurnBasedFight: MonoBehaviour
     }
 
     private void MakeMove() {
-        Debug.Log(CurrentFighter + " just attacked...");
+        Debug.Log(GetCurrentFighter() + " just attacked...");
         currentFighterPlayed = true;
     }
 
     private void RemoveDeadFighters() {
         List<IFighter> deadFighters= fighters.FindAll(fighter => fighter.IsAlive() == false);
         foreach(IFighter fighter in deadFighters) {
+            UnsetFighterActions(fighter);
             fighters.Remove(fighter);
-            fighter.OnFighterDeath -= RemoveDeadFighters;
         }
 
+    }
+
+    private void SetFighterActions(IFighter fighter) {
+        fighter.OnAttack += MakeMove;
+        fighter.OnFighterDeath += RemoveDeadFighters;
+    }
+
+    private void UnsetFighterActions(IFighter fighter) {
+        fighter.OnAttack -= MakeMove;
+        fighter.OnFighterDeath -= RemoveDeadFighters;
     }
 
     #endregion

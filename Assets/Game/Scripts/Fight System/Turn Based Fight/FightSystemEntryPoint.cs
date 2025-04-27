@@ -1,20 +1,21 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class FightSystemEntryPoint : MonoBehaviour {
 
-    
-    [SerializeField] PlayerFighter player;
-    [SerializeField] Transform playerPosition;
+    [SerializeField] private bool shouldStartFightOnLoad = false;
+    [SerializeField] private GameObject StartFightScreen;
 
     void Start()
     {
-        player.transform.DOMove(playerPosition.position, 1f);
-        Invoke(nameof(StartFight), 1f);
+        StartFightScreen.SetActive(true);
+        if(shouldStartFightOnLoad) {
+            StartFightOnClick();
+        }
     }
 
-    public void StartFight() {
-        Debug.Log("starting fight...");
-        FightSystemManager.TurnBasedFight.StartFight();
+    //Assign this to a button.
+    public void StartFightOnClick()
+    {
+        StartCoroutine(FightSystemManager.StartFight());
     }
 }

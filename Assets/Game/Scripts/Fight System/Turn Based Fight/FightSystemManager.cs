@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FightSystemManager : MonoBehaviour
@@ -19,16 +18,32 @@ public class FightSystemManager : MonoBehaviour
     #endregion
 
     [SerializeField] private TurnBasedFight turnBasedFight;
+    [SerializeField] private FighterHandler fighterHandler;
     [SerializeField] private TargetSelector targetSelector;
+    
     public static TurnBasedFight TurnBasedFight => Instance.turnBasedFight;
+    public static FighterHandler FighterHandler => Instance.fighterHandler;
     public static TargetSelector TargetSelector => Instance.targetSelector;
-
     
     public static bool IsPlaying(IFighter givenFighter) {
-        if(givenFighter != TurnBasedFight.CurrentFighter) {
+        if(givenFighter != TurnBasedFight.GetCurrentFighter()) {
             return false;
         }
-
         return true;
+    }
+
+    public static bool IsFighterPlayer(IFighter fighter) {
+        if(fighter.Team != FighterTeam.Players) {
+            return false;
+        }
+        return true;
+    }
+    
+    public static IEnumerator StartFight() {
+        FighterHandler.MovePlayersIntoFight();
+        yield return new WaitForSeconds(FighterHandler.TimeToMoveIntoFight + .1f);
+
+        Debug.Log("starting fight...");
+        TurnBasedFight.StartFight();
     }
 }

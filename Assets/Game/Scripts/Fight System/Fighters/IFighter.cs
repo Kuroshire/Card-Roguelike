@@ -7,9 +7,9 @@ public abstract class IFighter : MonoBehaviour {
     private bool isAlive = true;
 
     public abstract FighterTeam Team {get;}
+    public bool IsPlayerFighter => Team == FighterTeam.Players;
     
     public Action OnAttack;
-
     public Action OnCurrentHPChange;
     public Action OnFighterDeath;
 
@@ -40,5 +40,7 @@ public abstract class IFighter : MonoBehaviour {
         Debug.Log("fighter died...");
         isAlive = false;
         OnFighterDeath?.Invoke();
+
+        Destroy(gameObject);
     }
 }

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.Utilities;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class FollowCurrentFighter : MonoBehaviour
@@ -17,6 +13,8 @@ public class FollowCurrentFighter : MonoBehaviour
         fightHandler.OnFightStart += TurnOn;
         fightHandler.OnFightOver += TurnOff;
         fightHandler.OnCurrentFighterChange += UpdateCurrentFighter;
+        
+        TurnOff();
     }
 
     public void UpdateCurrentFighter() {
