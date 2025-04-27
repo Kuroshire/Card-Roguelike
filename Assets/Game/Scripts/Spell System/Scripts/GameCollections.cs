@@ -16,11 +16,14 @@ public class GameCollections: MonoBehaviour {
 
     #endregion
 
-    public RuneCollection allRunes;
-    public SpellCollection allSpells;
+    [SerializeField] private RuneCollection allRunes;
+    [SerializeField] private SpellCollection allSpells;
+
+    public static RuneCollection AllRunes => Instance.allRunes;
+    public static SpellCollection AllSpells => Instance.allSpells;
 
     public static Sprite GetSpriteFromRuneElement(RuneElement runeElement) {
-        RuneData runeData = Instance.allRunes.RuneList.Find((currentRune) => currentRune.Element == runeElement);
+        RuneData runeData = AllRunes.RuneList.Find((currentRune) => currentRune.Element == runeElement);
         if(!runeData) {
             throw new Exception("The rune you are trying to access doesn't exist...: " + runeElement);
         }

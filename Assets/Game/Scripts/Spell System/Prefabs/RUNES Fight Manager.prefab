@@ -29,14 +29,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1971128235053710474}
   - {fileID: 7946822166425655451}
+  - {fileID: 1971128235053710474}
   m_Father: {fileID: 3774438010364394023}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1857296841666093829
 MonoBehaviour:
@@ -63,6 +63,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7941603860592735634}
+  - component: {fileID: 6993678257239232712}
   m_Layer: 0
   m_Name: PlayerDeck
   m_TagString: Untagged
@@ -86,6 +87,23 @@ Transform:
   - {fileID: 4386396640961036845}
   m_Father: {fileID: 7098793823946672085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6993678257239232712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2821545089240115584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c313da3565df046916dbd8f7d8b477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handManager: {fileID: 7634039716110201674}
+  runeView: {fileID: 4142751936708433763, guid: c53358e4eb6f25c478eb5ce5e27e4c05, type: 3}
+  cardsPositionHandler: {fileID: 9039599829201886477}
+  cardSpawnPoint: {fileID: 4386396640961036845}
+  cardPerHand: 7
 --- !u!1 &3550087779843159376
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,8 +375,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -543, y: -15}
-  m_SizeDelta: {x: 400, y: 50}
+  m_AnchoredPosition: {x: 25, y: -15}
+  m_SizeDelta: {x: 400, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &4482582814302243985
 CanvasRenderer:
@@ -475,7 +493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8215696017938527023
 RectTransform:
   m_ObjectHideFlags: 0
@@ -720,6 +738,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7098793823946672085}
+  - component: {fileID: 3790229369393861076}
   - component: {fileID: 4189300728230304466}
   m_Layer: 0
   m_Name: RUNES Fight Manager
@@ -749,6 +768,22 @@ Transform:
   - {fileID: 6575459613387652688}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3790229369393861076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8385575078034497169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38cf6c8703cf7574aa1428fe417c68d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellFightManager: {fileID: 4189300728230304466}
+  spellManager: {fileID: 1538804360288324989}
+  handManager: {fileID: 7634039716110201674}
+  deckHandler: {fileID: 6993678257239232712}
 --- !u!114 &4189300728230304466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,13 +796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bd8b18f13e88c40b904097f4c3995d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collection: {fileID: 11400000, guid: f7631e36d0b54f944984748a19b59c0c, type: 2}
-  runeView: {fileID: 4142751936708433763, guid: c53358e4eb6f25c478eb5ce5e27e4c05, type: 3}
-  handManager: {fileID: 7634039716110201674}
-  cardsPositionHandler: {fileID: 9039599829201886477}
-  cardSpawnPoint: {fileID: 4386396640961036845}
-  cardPerHand: 7
-  spellManager: {fileID: 1538804360288324989}
+  currentAttack: {fileID: 0}
 --- !u!1 &8398814552518295106
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,11 +829,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5031937011210782080}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -75}
-  m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -50}
+  m_SizeDelta: {x: 400, y: 50}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &3583295041325320769
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -866,9 +895,9 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_fontStyle: 2
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class SpellData : ScriptableObject
 {
     [field: SerializeField] public List<RuneElement> RuneRecipe {get; private set;}
     [field: SerializeField] public string Name {get; private set;}
+    [field: SerializeField] public string Description {get; private set;}
     [field: SerializeField] public string Effect {get; private set;}
 
     public bool IsRecipeMatching(List<RuneElement> givenRecipe) {

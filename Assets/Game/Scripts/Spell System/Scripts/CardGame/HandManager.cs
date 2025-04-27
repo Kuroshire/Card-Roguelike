@@ -15,6 +15,27 @@ public class HandManager : MonoBehaviour
     public event Action OnHandSelectionChanges;
     public event Action OnHandChange;
 
+    private bool isSelectionLocked = false;
+    public bool IsSelectionLocked => isSelectionLocked;
+
+    void Start()
+    {
+        SpellSystemManager.SpellFightManager.OnSpellUse += UnlockOnSpellUsed;
+        SpellSystemManager.SpellFightManager.OnSpellFailed += UnlockSelection;
+    }
+
+    private void UnlockOnSpellUsed(SpellData _) {
+        UnlockSelection();
+    }
+
+    public void LockSelection() {
+        isSelectionLocked = true;
+    }
+
+    public void UnlockSelection() {
+        isSelectionLocked = false;
+    }
+
     public List<RuneView> GetSelectedRuneList() {
         List<RuneView> selectedRuneList = new();
         hand.ForEach((rune) => {

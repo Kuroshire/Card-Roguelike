@@ -8,16 +8,19 @@ public class SpellManager : MonoBehaviour
 
     [SerializeField] private HandManager handManager;
 
-    public List<SpellData> FindValidSpell(List<RuneElement> runes) {
-        List<SpellData> validSpells = new();
-
+    public SpellData FindValidSpell(List<RuneElement> runes) {
         foreach(SpellData spell in UsableSpells.SpellList) {
             if(spell.IsRecipeMatching(runes)) {
                 Debug.Log("can use this spell: " + spell.Name);
-                validSpells.Add(spell);
+                return spell;
             }
         }
 
-        return validSpells;
+        return null;
+    }
+
+    public SpellData FindValidSpellFromSelectedRunes() {
+        List<RuneElement> selectedRunes = handManager.GetElementsFromSelectedRunes();
+        return FindValidSpell(selectedRunes);
     }
 }

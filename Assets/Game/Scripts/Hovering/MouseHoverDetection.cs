@@ -46,4 +46,13 @@ public class MouseHoverDetection: MonoBehaviour {
             OnHoverChange?.Invoke();
         }
     }
+
+    public static void InteractWithHovered() {
+        IHoverable currentHover = MouseHoverDetection.CurrentHover;
+        if(currentHover == null) {
+            return;
+        }
+
+        currentHover.OnClick();
+    }
 }

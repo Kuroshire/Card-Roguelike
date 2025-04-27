@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,12 @@ using UnityEngine;
 public class RuneUseDisplay : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer runeDisplayer;
-
     [SerializeField] private float runeShowTime = 0.2f, runeDownTime = 0.1f;
+    public Action OnDisplayRuneFinish;
 
     void Start()
     {
         runeDisplayer.gameObject.SetActive(false);
-        SpellFightManager.Instance.OnSelectedCardUsed += ShowSpellRunes;
     }
 
     public void ShowSpellRunes(List<RuneElement> runeList) {
@@ -31,7 +31,7 @@ public class RuneUseDisplay : MonoBehaviour
         runeDisplayer.gameObject.SetActive(false);
     }
 
-    private IEnumerator DisplayRuneList(List<RuneElement> runes) {
+    public IEnumerator DisplayRuneList(List<RuneElement> runes) {
         foreach(RuneElement rune in runes) {
             SetRuneToDisplay(rune);
             ShowRuneDisplay();
@@ -39,5 +39,7 @@ public class RuneUseDisplay : MonoBehaviour
             HideRuneDisplay();
             yield return new WaitForSeconds(runeDownTime);
         }
+
+        OnDisplayRuneFinish?.Invoke();
     }
 }

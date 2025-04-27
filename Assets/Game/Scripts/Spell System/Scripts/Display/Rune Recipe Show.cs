@@ -40,16 +40,14 @@ public class RuneRecipeShow : MonoBehaviour
 
     private void UpdateTextWithSpellFound(List<RuneElement> runes) {
         string prefix = "Spell : ";
-        List<SpellData> foundSpells = spellManager.FindValidSpell(runes);
+        SpellData foundSpell = spellManager.FindValidSpell(runes);
 
-        Debug.Log("number of spell found: " + foundSpells.Count);
-
-        if(foundSpells.Count == 0) {
+        if(foundSpell == null) {
             //no matching spells...
             spellFound.text = prefix + "???";
             return;
         }
 
-        spellFound.text = prefix + foundSpells[0].Name;
+        spellFound.text = prefix + foundSpell.Name;
     }
 }

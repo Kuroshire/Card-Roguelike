@@ -63,6 +63,11 @@ public class RuneView : MonoBehaviour, IHoverable
     }
 
     public void OnClick() {
+        if(SpellSystemManager.HandManager.IsSelectionLocked == true) {
+            Debug.Log("Cannot change current selection...");
+            return;
+        }
+
         if(!IsSelected) {
             Select();
         } else {
