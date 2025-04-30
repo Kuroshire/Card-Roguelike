@@ -5,23 +5,21 @@ using System;
 
 public class TurnBasedFight: MonoBehaviour
 {
-    private List<IFighter> fighters = new();
     [SerializeField] private float timeBetweenTurns = .5f;
-
+    private bool isInitialized = false;
     private bool isFightOnGoing = false;
-
     private int currentFighterIndex = 0;
     private bool currentFighterPlayed = false;
+    public FighterTeam WinningTeam {get; private set;} = FighterTeam.None;
+
+
+    public Vector3 CurrentFighterPosition => GetCurrentFighter().transform.position;
+    private List<IFighter> Fighters => FightSystemManager.FighterHandler.AllFighters;
 
     public event Action OnCurrentFighterChange;
     public event Action OnFightStart, OnFightOver;
 
-    public Vector3 CurrentFighterPosition => GetCurrentFighter().transform.position;
-    public FighterTeam WinningTeam {get; private set;} = FighterTeam.None;
-
-    private bool isInitialized = false;
     public void InitializeFight() {
-        fighters = FightSystemManager.FighterHandler.AllFighters;
         isInitialized = true;
     }
 
@@ -35,7 +33,7 @@ public class TurnBasedFight: MonoBehaviour
             InitializeFight();
         }
 
-        return fighters[currentFighterIndex];
+        return Fighters[currentFighterIndex];
     }
 
     public void StartFight()
@@ -49,7 +47,7 @@ public class TurnBasedFight: MonoBehaviour
             return;
         }
 
-        foreach(IFighter fighter in fighters) {
+        foreach(IFighter fighter in Fighters) {
             SetFighterActions(fighter);
         }
 
@@ -70,43 +68,34 @@ public class TurnBasedFight: MonoBehaviour
     #region FIGHT LOGIC
     public IEnumerator FightLoop() {
         isFightOnGoing = true;
-        while(!IsFightOver()) {
+        while(WinningTeam == FighterTeam.None) {
             // Debug.Log("It's " + CurrentFighter + " turn...");
             yield return new WaitUntil(() => currentFighterPlayed);
             Debug.Log("-------------- TURN PLAYED ! --------------");
             yield return new WaitForSeconds(timeBetweenTurns);
+            
+            HandleEndOfTurn();
+        }
+    }
+
+    private void HandleEndOfTurn() {
+        if(IsFightOver()) {
+            EndFight();
+        } else {
             NextFighter();
         }
-
-        EndFight();
     }
 
     private bool IsFightOver() {
-        int playerLeft = 0;
-        int monstersLeft = 0;
 
-        foreach(IFighter fighter in fighters) {
-            if(fighter.IsAlive()) {
-                switch(fighter.Team) {
-                    case FighterTeam.Players:
-                        playerLeft++;
-                        break;
-                    case FighterTeam.Monsters:
-                        monstersLeft++;
-                        break;
-                    default:
-                        Debug.LogWarning("Unknown fighter !");
-                        break;
-                }
-            }
-        }
+        bool hasMonsterLost = FightSystemManager.FighterHandler.IsMonsterTeamDead;
+        bool hasPlayerLost = FightSystemManager.FighterHandler.IsPlayerTeamDead;
 
-        if(playerLeft == 0) {
+        if(hasPlayerLost) {
             WinningTeam = FighterTeam.Monsters;
             return true;
         }
-
-        if(monstersLeft == 0) {
+        if(hasMonsterLost) {
             WinningTeam = FighterTeam.Players;
             return true;
         }
@@ -115,12 +104,14 @@ public class TurnBasedFight: MonoBehaviour
     }
 
     private void NextFighter() {
-        // do {
-            Debug.Log("next fighter move...");
-            currentFighterIndex = (currentFighterIndex + 1) % fighters.Count;
-            currentFighterPlayed = false;
-            OnCurrentFighterChange?.Invoke();
-        // } while(!CurrentFighter.IsAlive());
+        if(Fighters.Count == 0) {
+            Debug.LogError("No targets to focus");
+            return;
+        }
+        Debug.Log("next fighter move...");
+        currentFighterIndex = (currentFighterIndex + 1) % Fighters.Count;
+        currentFighterPlayed = false;
+        OnCurrentFighterChange?.Invoke();
     }
 
     private void MakeMove() {
@@ -128,23 +119,19 @@ public class TurnBasedFight: MonoBehaviour
         currentFighterPlayed = true;
     }
 
-    private void RemoveDeadFighters() {
-        List<IFighter> deadFighters= fighters.FindAll(fighter => fighter.IsAlive() == false);
-        foreach(IFighter fighter in deadFighters) {
-            UnsetFighterActions(fighter);
-            fighters.Remove(fighter);
-        }
-
+    private void RemoveDeadFighter(IFighter fighter) {
+        List<IFighter> deadFighters= Fighters.FindAll(fighter => fighter.IsAlive() == false);
+        UnsetFighterActions(fighter);
     }
 
     private void SetFighterActions(IFighter fighter) {
         fighter.OnAttack += MakeMove;
-        fighter.OnFighterDeath += RemoveDeadFighters;
+        fighter.OnFighterDeath += RemoveDeadFighter;
     }
 
     private void UnsetFighterActions(IFighter fighter) {
         fighter.OnAttack -= MakeMove;
-        fighter.OnFighterDeath -= RemoveDeadFighters;
+        fighter.OnFighterDeath -= RemoveDeadFighter;
     }
 
     #endregion
@@ -153,11 +140,11 @@ public class TurnBasedFight: MonoBehaviour
     /// returns the list of fighters within the given team who are still alive.
     /// </summary>
     public List<IFighter> GetFightersFromTeam(FighterTeam team) {
-        return fighters.FindAll(fighter => fighter.IsAlive() && fighter.Team == team);
+        return Fighters.FindAll(fighter => fighter.IsAlive() && fighter.Team == team);
     }
 
     public List<IFighter> GetFightersFromMultipleTeams(List<FighterTeam> teamList) {
-        return fighters.FindAll(fighter => fighter.IsAlive() && teamList.Contains(fighter.Team));
+        return Fighters.FindAll(fighter => fighter.IsAlive() && teamList.Contains(fighter.Team));
     }
 }
 

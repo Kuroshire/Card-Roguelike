@@ -16,9 +16,27 @@ public class FighterHandler : MonoBehaviour
     public bool IsPlayerTeamDead => playerTeam.Find((player) => player.IsAlive()) == null;
     public bool IsMonsterTeamDead => monsterTeam.Find((monster) => monster.IsAlive()) == null;
 
+    private void Start() {
+        foreach(IFighter fighter in AllFighters) {
+            fighter.OnFighterDeath += RemoveOnDeath;
+        }
+    }
+
     public void MovePlayersIntoFight() {
         foreach(IFighter player in playerTeam) {
             playerFightPosition.MoveFighterIntoFight(player, timeToMoveIntoFight);
         }
+    }
+
+    private void RemoveOnDeath(IFighter fighter) {
+        if(playerTeam.Contains(fighter)) {
+            playerTeam.Remove((PlayerFighter) fighter);
+        }
+
+        if(monsterTeam.Contains(fighter)) {
+            monsterTeam.Remove((MonsterFighter) fighter);
+        }
+
+        fighter.OnFighterDeath -= RemoveOnDeath;
     }
 }

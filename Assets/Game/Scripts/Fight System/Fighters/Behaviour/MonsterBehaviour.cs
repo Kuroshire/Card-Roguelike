@@ -8,6 +8,10 @@ public class MonsterBehaviour : MonoBehaviour
 
     public IFighter ChoosePlayerTargetRandomly() {
         List<IFighter> playerFighters = FightSystemManager.TurnBasedFight.GetFightersFromTeam(FighterTeam.Players);
+        if(playerFighters.Count == 0) {
+            //fight is over.
+            return null;
+        }
         int randomIndex = Random.Range(0, playerFighters.Count);
 
         return playerFighters[randomIndex];

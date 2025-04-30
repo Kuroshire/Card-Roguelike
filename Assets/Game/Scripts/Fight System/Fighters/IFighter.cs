@@ -11,7 +11,7 @@ public abstract class IFighter : MonoBehaviour {
     
     public Action OnAttack;
     public Action OnCurrentHPChange;
-    public Action OnFighterDeath;
+    public Action<IFighter> OnFighterDeath;
 
     public int CurrentHP => currentHP;
     public int MaxHP => maxHP;
@@ -39,7 +39,7 @@ public abstract class IFighter : MonoBehaviour {
     public void Die() {
         Debug.Log("fighter died...");
         isAlive = false;
-        OnFighterDeath?.Invoke();
+        OnFighterDeath?.Invoke(this);
 
         Destroy(gameObject);
     }

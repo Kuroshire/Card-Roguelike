@@ -64,7 +64,7 @@ public class MonsterFighter: IFighter {
         SetTurnsLeft(turnsBetweenAttacks);
     }
 
-    private void DeathBehaviour() {
+    private void DeathBehaviour(IFighter _) {
         gameObject.SetActive(false);
     }
 }
