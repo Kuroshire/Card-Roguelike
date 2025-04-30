@@ -1,4 +1,4 @@
-repository "Card Roguelike@Kuroshire@cloud"
+repository "Cloud Repositories/Card Roguelike@20066276578566@cloud"
   path "/"
     br "/main"
     co "/main"

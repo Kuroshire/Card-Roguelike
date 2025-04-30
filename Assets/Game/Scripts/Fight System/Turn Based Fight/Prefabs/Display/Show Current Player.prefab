@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 7403669352019621907}
   - component: {fileID: 7101883082645810057}
   m_Layer: 0
-  m_Name: Show Current Fighter
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7403669352019621907
 Transform:
   m_ObjectHideFlags: 0
@@ -93,9 +93,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2757390971959475766}
-  - component: {fileID: 2619727108148152649}
+  - component: {fileID: 8923389296440839352}
   m_Layer: 0
-  m_Name: Follow Current Fighter
+  m_Name: Show Current Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ Transform:
   - {fileID: 7403669352019621907}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2619727108148152649
+--- !u!114 &8923389296440839352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7386350323840401879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28517434a46b5304f8eb749eeaee30f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c6a2087bead0c74ba5d6f79201ef6a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   children:
