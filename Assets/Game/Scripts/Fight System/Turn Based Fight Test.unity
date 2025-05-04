@@ -304,6 +304,10 @@ PrefabInstance:
       propertyPath: attackList.Array.data[1]
       value: 
       objectReference: {fileID: 4371550056818650142, guid: fc5ff80d2d5ed4544bc3e628a343094b, type: 3}
+    - target: {fileID: 4595249890478987067, guid: 790285a14e8b318498bac156d0985133, type: 3}
+      propertyPath: attackList.Array.data[2]
+      value: 
+      objectReference: {fileID: 4371550056818650142, guid: fc5ff80d2d5ed4544bc3e628a343094b, type: 3}
     - target: {fileID: 8084227307371924793, guid: 790285a14e8b318498bac156d0985133, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7
@@ -1486,7 +1490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7788939101433703673, guid: 0046994c7de00224eaaefc8f6b96c062, type: 3}
       propertyPath: maxHP
-      value: 10
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 7788939101433703673, guid: 0046994c7de00224eaaefc8f6b96c062, type: 3}
       propertyPath: currentAttack
@@ -2107,6 +2111,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4595249890478987067, guid: 790285a14e8b318498bac156d0985133, type: 3}
+      propertyPath: attackList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4595249890478987067, guid: 790285a14e8b318498bac156d0985133, type: 3}
+      propertyPath: attackList.Array.data[1]
+      value: 
+      objectReference: {fileID: 4371550056818650142, guid: fc5ff80d2d5ed4544bc3e628a343094b, type: 3}
     - target: {fileID: 8084227307371924793, guid: 790285a14e8b318498bac156d0985133, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7
