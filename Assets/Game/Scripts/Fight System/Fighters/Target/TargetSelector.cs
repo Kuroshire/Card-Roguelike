@@ -21,8 +21,14 @@ public class TargetSelector : MonoBehaviour
         StopTargeting();
     }
 
-    public void StartTargeting(FighterTeam team) {
-        GetAllPossibleTargets(team);
+    public void StartTargeting(List<IFighter> fighterList, bool allowTargetOnDeadFighters = false) {
+        if(allowTargetOnDeadFighters == false) {
+            List<IFighter> aliveFighters = fighterList.FindAll((fighter) => fighter.IsAlive());
+            SetPossibleTargets(aliveFighters);
+        } else {
+            SetPossibleTargets(fighterList);
+        }
+
         if(validTarget.Count == 0) {
             Debug.LogWarning("NO TARGET");
             throw new Exception("No target to attack");
@@ -41,14 +47,8 @@ public class TargetSelector : MonoBehaviour
         IsTargeting = false;
     }
 
-    private void GetAllPossibleTargets(FighterTeam team) {
-        List<IFighter> foundTargets = FightSystemManager.TurnBasedFight.GetFightersFromTeam(team);
-        validTarget = foundTargets;
-    }
-
-    private void GetAllPossibleTargets(List<FighterTeam> teamList) {
-        List<IFighter> foundTargets = FightSystemManager.TurnBasedFight.GetFightersFromMultipleTeams(teamList);
-        validTarget = foundTargets;
+    private void SetPossibleTargets(List<IFighter> fighterList) {
+        validTarget = fighterList;
     }
 
     #region INPUTS FUNCTIONS

@@ -1,42 +1,39 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EndOfFightScreen : MonoBehaviour
 {
     [SerializeField] private GameObject endOfFightScreen;
     [SerializeField] private TextMeshProUGUI winnerText;
 
-    void Start()
+    void Awake()
     {
-        FightSystemManager.TurnBasedFight.OnFightOver += ActivateEndOfFight;
         TurnOff();
     }
 
-    public void ActivateEndOfFight() {
-        FighterTeam winners = FightSystemManager.TurnBasedFight.WinningTeam;
+    public void SetActionOnFightOver(TurnBasedFight turnBasedFight)
+    {
+        turnBasedFight.OnFightOver += ActivateEndOfFight;
+    }
+
+    public void ActivateEndOfFight(TeamEnum winners) {
 
         switch(winners) {
-            case FighterTeam.Players:
+            case TeamEnum.Player:
                 winnerText.text = "Players Won !";
                 break;
-            case FighterTeam.Monsters:
+            case TeamEnum.Enemy:
                 winnerText.text = "Monsters Won !";
                 break;
-            case FighterTeam.None:
+            case TeamEnum.None:
                 winnerText.text = "Draw !";
                 break;
         }
 
-        TurnOn();
+        endOfFightScreen.SetActive(true);
     }
 
     public void TurnOff() {
         endOfFightScreen.SetActive(false);
     }
-
-    public void TurnOn() {
-        endOfFightScreen.SetActive(true);
-    }
-
 }

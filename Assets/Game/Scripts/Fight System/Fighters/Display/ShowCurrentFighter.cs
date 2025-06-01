@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShowCurrentFighter : MonoBehaviour
@@ -17,10 +15,16 @@ public class ShowCurrentFighter : MonoBehaviour
 
 
     public void UpdateCurrentFighter() {
-        transform.position = fightHandler.GetCurrentFighter().transform.position;
+        if(fightHandler.CurrentFighter == null) {
+            TurnOff();
+            return;
+        }
+
+        TurnOn();
+        transform.position = fightHandler.CurrentFighter.transform.position;
     }
 
-    private void TurnOff() {
+    private void TurnOff(TeamEnum _ = TeamEnum.None) {
         gameObject.SetActive(false);
     }
 

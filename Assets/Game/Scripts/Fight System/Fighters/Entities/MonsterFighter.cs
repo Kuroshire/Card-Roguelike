@@ -13,7 +13,7 @@ public class MonsterFighter: IFighter {
 
     public event Action OnTurnsLeftUpdate;
 
-    public override FighterTeam Team { get => FighterTeam.Monsters; }
+    public override TeamEnum Team { get => TeamEnum.Enemy; }
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class MonsterFighter: IFighter {
         if(turnsLeft > 0) {
             Debug.Log("monster won't attack this turn...");
             SetTurnsLeft(turnsLeft - 1);
-            OnAttack?.Invoke();
+            EndTurn();
             return;
         }
 
@@ -62,6 +62,8 @@ public class MonsterFighter: IFighter {
         OnAttack?.Invoke();
 
         SetTurnsLeft(turnsBetweenAttacks);
+
+        EndTurn();
     }
 
     private void DeathBehaviour(IFighter _) {

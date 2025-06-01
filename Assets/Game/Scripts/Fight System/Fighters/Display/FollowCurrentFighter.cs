@@ -2,26 +2,26 @@ using UnityEngine;
 
 public class FollowCurrentFighter : MonoBehaviour
 {
-    private TurnBasedFight fightHandler;
+    private TurnBasedFight turnBasedFight;
 
     [SerializeField] private GameObject[] children;
 
     void Start()
     {
-        fightHandler = FightSystemManager.TurnBasedFight;
+        turnBasedFight = FightSystemManager.TurnBasedFight;
 
-        fightHandler.OnFightStart += TurnOn;
-        fightHandler.OnFightOver += TurnOff;
-        fightHandler.OnCurrentFighterChange += UpdateCurrentFighter;
+        turnBasedFight.OnFightStart += TurnOn;
+        turnBasedFight.OnFightOver += TurnOff;
+        turnBasedFight.OnCurrentFighterChange += UpdateCurrentFighter;
         
         TurnOff();
     }
 
     public void UpdateCurrentFighter() {
-        transform.position = fightHandler.CurrentFighterPosition;
+        transform.position = turnBasedFight.CurrentFighterPosition;
     }
 
-    private void TurnOff() {
+    private void TurnOff(TeamEnum _ = TeamEnum.None) {
         foreach(GameObject child in children) {
             child.SetActive(false);
         }

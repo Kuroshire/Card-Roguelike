@@ -99,9 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93b618ad4f2d569478074e257bdbeaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 100
+  maxHP: 25
   turnsBetweenAttacks: 3
-  turnsLeft: 0
   behaviour: {fileID: 4595249890478987067}
 --- !u!114 &4595249890478987067
 MonoBehaviour:

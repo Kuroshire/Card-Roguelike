@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class FightSystemManager : MonoBehaviour
@@ -7,43 +6,72 @@ public class FightSystemManager : MonoBehaviour
 
     public static FightSystemManager Instance { get; private set; }
 
-    private void Awake() {
-        if (Instance != null && Instance != this) {
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
             Destroy(this);
-        } else {
+        }
+        else
+        {
             Instance = this;
         }
     }
 
     #endregion
 
+    #region SUB SYSTEMS
     [SerializeField] private TurnBasedFight turnBasedFight;
-    [SerializeField] private FighterHandler fighterHandler;
     [SerializeField] private TargetSelector targetSelector;
-    
+    [SerializeField] private FighterFactory fighterFactory;
+
     public static TurnBasedFight TurnBasedFight => Instance.turnBasedFight;
-    public static FighterHandler FighterHandler => Instance.fighterHandler;
     public static TargetSelector TargetSelector => Instance.targetSelector;
-    
-    public static bool IsPlaying(IFighter givenFighter) {
-        if(givenFighter != TurnBasedFight.GetCurrentFighter()) {
-            return false;
-        }
-        return true;
+    public static FighterFactory FighterFactory => Instance.fighterFactory;
+    #endregion
+
+    public bool isInitialized = false;
+
+    public static void Initialise(FightSettings settings)
+    {
+        TurnBasedFight.PrepareFight(settings);
     }
 
-    public static bool IsFighterPlayer(IFighter fighter) {
-        if(fighter.Team != FighterTeam.Players) {
-            return false;
-        }
-        return true;
-    }
-    
-    public static IEnumerator StartFight() {
-        FighterHandler.MovePlayersIntoFight();
-        yield return new WaitForSeconds(FighterHandler.TimeToMoveIntoFight + .1f);
-
-        Debug.Log("starting fight...");
+    //Assign this to a button.
+    public void StartFight()
+    {
         TurnBasedFight.StartFight();
     }
+
+    //TODO: restart the fight entirely, respawning players and monsters like they were at the start of the fight.
+    public void RestartFight()
+    {
+
+    }
+
+    //TODO: create the next fight, but keep current players as is (same hp etc). Instantiate new monsters.
+    public void GoToNextFight()
+    {
+
+    }
+
+    #region UTILS
+    public static bool IsPlaying(IFighter givenFighter)
+    {
+        if (givenFighter != TurnBasedFight.CurrentFighter)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public static bool IsFighterPlayer(IFighter fighter)
+    {
+        if (fighter.Team != TeamEnum.Player)
+        {
+            return false;
+        }
+        return true;
+    }
+    #endregion
 }

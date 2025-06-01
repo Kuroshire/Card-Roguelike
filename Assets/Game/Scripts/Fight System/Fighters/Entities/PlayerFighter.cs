@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 public class PlayerFighter: IFighter {
-    public override FighterTeam Team { get => FighterTeam.Players; }
+    public override TeamEnum Team { get => TeamEnum.Player; }
 
     public override void Attack(IFighter target, IFighterAttack attack) {
         Debug.Log("player attacked.");
@@ -16,6 +16,8 @@ public class PlayerFighter: IFighter {
         yield return new WaitForSeconds(instance.AnimationTime);
         
         ApplyDamage(target, attackDamage);
+
+        EndTurn();
     }
 
     private void ApplyDamage(IFighter target, int attackDamage) {

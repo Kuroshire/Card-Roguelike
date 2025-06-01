@@ -1,21 +1,39 @@
 using UnityEngine;
 
-public class FightSystemEntryPoint : MonoBehaviour {
-
-    [SerializeField] private bool shouldStartFightOnLoad = false;
-    [SerializeField] private GameObject StartFightScreen;
+public class FightSystemEntryPoint : MonoBehaviour
+{
+    [SerializeField] private bool shouldStartImmediately = false;
+    [SerializeField] private FightSettings settings;
 
     void Start()
     {
-        StartFightScreen.SetActive(true);
-        if(shouldStartFightOnLoad) {
-            StartFightOnClick();
+        if (shouldStartImmediately)
+        {
+            BeginFightSystem();
         }
     }
 
-    //Assign this to a button.
-    public void StartFightOnClick()
+    public void SetSettings(FightSettings settings)
     {
-        StartCoroutine(FightSystemManager.StartFight());
+        this.settings = settings;
+    }
+
+    public void BeginFightSystem()
+    {
+        Debug.Log("starting...");
+        if (settings == null)
+        {
+            Debug.LogWarning("Settings are not set...");
+            FightSettings defaultSettings = new(2, 3);
+            SetSettings(defaultSettings);
+        }
+        FightSystemManager.Initialise(settings);
+        FightSystemManager.Instance.StartFight();
+    }
+
+    public void BeginFightWithSettings(FightSettings settings)
+    {
+        SetSettings(settings);
+        BeginFightSystem();
     }
 }
