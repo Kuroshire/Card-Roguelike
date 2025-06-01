@@ -1,23 +1,30 @@
 using UnityEngine;
 
 public class Rune {
-    private readonly RuneData runeData;
+    
+    [field: SerializeField] public string Name {get; private set;}
+    [field: SerializeField] public RuneElement Element {get; private set;}
+    [field: SerializeField] public RuneRarity Rarity {get; private set;}
 
-    public Rune(RuneData runeData) {
-        this.runeData = runeData;
-        Rarity = runeData.Rarity;
+    public Rune()
+    {
+        Element = RuneElementExtension.GetOneRandomElement();
+        Name = Element + " rune";
+        Rarity = RuneRarity.SMALLER;
     }
 
-    public Sprite Sprite { get => runeData.Sprite; }
-    public RuneElement Element { get => runeData.Element; }
-    public string Title { get => runeData.Name; }
-    public RuneRarity Rarity { get; set; }
+    public Rune(RuneData runeData)
+    {
+        Name = runeData.Name;
+        Element = runeData.Element;
+        Rarity = RuneRarity.SMALLER;
+    }
 
     public void PerformEffect() {
-        Debug.Log("using rune : " + Title);
+        Debug.Log("using rune : " + Name);
     }
 
     public override string ToString() {
-        return "Name : " + Title + ", Element : " + Element;
+        return "Name : " + Name + ", Element : " + Element;
     }
 }

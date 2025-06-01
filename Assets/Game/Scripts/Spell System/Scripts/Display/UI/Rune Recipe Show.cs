@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,29 +6,36 @@ public class RuneRecipeShow : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI runeRecipe;
     [SerializeField] private TextMeshProUGUI spellFound;
-    [SerializeField] private HandManager handManager;
-    [SerializeField] private SpellManager spellManager;
+    private CardManager cardManager;
+    private SpellManager spellManager;
 
-    void Start()
+    public void Initialise(CardManager cardManager, SpellManager spellManager)
     {
-        handManager.OnHandSelectionChanges += UpdateTextWithSelection;
+        this.cardManager = cardManager;
+        this.spellManager = spellManager;
+        cardManager.OnHandSelectionChange += UpdateTextWithSelection;
     }
 
-    private void UpdateTextWithSelection() {
-        List<RuneElement> selectionList = handManager.GetElementsFromSelectedRunes();
+    private void UpdateTextWithSelection()
+    {
+        // Debug.Log("updating display !");
+        List<RuneElement> selectionList = cardManager.GetElementsFromSelectedRunes();
         UpdateTextWithRuneList(selectionList);
         UpdateTextWithSpellFound(selectionList);
     }
 
 
-    private void UpdateTextWithRuneList(List<RuneElement> runes) {
-        if(runes.Count == 0) {
+    private void UpdateTextWithRuneList(List<RuneElement> runes)
+    {
+        if (runes.Count == 0)
+        {
             runeRecipe.text = "";
             return;
         }
 
         string newText = "";
-        for(int i = 0; i < runes.Count; i++) {
+        for (int i = 0; i < runes.Count; i++)
+        {
             newText += $"{runes[i]} + ";
         }
 
@@ -38,11 +44,13 @@ public class RuneRecipeShow : MonoBehaviour
         runeRecipe.text = newText;
     }
 
-    private void UpdateTextWithSpellFound(List<RuneElement> runes) {
+    private void UpdateTextWithSpellFound(List<RuneElement> runes)
+    {
         string prefix = "Spell : ";
         SpellData foundSpell = spellManager.FindValidSpell(runes);
 
-        if(foundSpell == null) {
+        if (foundSpell == null)
+        {
             //no matching spells...
             spellFound.text = prefix + "???";
             return;

@@ -19,7 +19,7 @@ public class RuneUseDisplay : MonoBehaviour
     }
 
     private void SetRuneToDisplay(RuneElement element) {
-        Sprite runeSprite = GameCollections.GetSpriteFromRuneElement(element);
+        Sprite runeSprite = GameCollections.AllRunes.GetSpriteFromRuneElement(element);
         runeDisplayer.sprite = runeSprite;
     }
 

@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Spell To Attack", menuName = "Collection/SpellToAttack")]
-public class SpellDataToAttackDictionnary : SerializedScriptableObject {
+public class SpellDataToAttackCollection : SerializedScriptableObject {
     public Dictionary<SpellData, IFighterAttack> spellToAttackDict = new();
 
     public IFighterAttack GetFighterAttack(SpellData spell) {

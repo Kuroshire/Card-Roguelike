@@ -1,0 +1,20 @@
+{
+    "name": "SpellSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7e9deb6f1106a0e45beb0c5ca803127c",
+        "GUID:488eee5de6d8b8944969c7fdd547ca12",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:21d1eb854b91ade49bc69a263d12bee2",
+        "GUID:d8b63aba1907145bea998dd612889d6b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

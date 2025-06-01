@@ -1,48 +1,58 @@
 using System.Collections;
 using UnityEngine;
 
-public class SpellSystemManager : MonoBehaviour {
+public class SpellSystemManager : MonoBehaviour
+{
     #region Singleton
     public static SpellSystemManager Instance { get; private set; }
 
-    private void Awake() {
-        if (Instance != null && Instance != this) {
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
             Destroy(this);
-        } else {
+        }
+        else
+        {
             Instance = this;
-            InitializeManagers();
         }
     }
     #endregion
 
-    [SerializeField] private SpellFightManager spellFightManager;
+    [SerializeField] private SpellUser spellUser;
     [SerializeField] private SpellManager spellManager;
-    [SerializeField] private HandManager handManager;
-    [SerializeField] private DeckHandler deckHandler;
+    [SerializeField] private CardManager cardManager;
+    [SerializeField] private SpellUIManager spellUIManager;
 
-    private bool isInitialized = false;
+    public static SpellUser SpellUser => Instance.spellUser;
+    public static CardManager CardManager => Instance.cardManager;
+    public static SpellManager SpellManager => Instance.spellManager;
+    public static SpellUIManager SpellUIManager => Instance.spellUIManager;
 
-    public void InitializeManagers() {
-        isInitialized = true;
+    public static bool Initialise(int deckSize, int handSize)
+    {
+        CardManager.Initialise(deckSize, handSize);
+        SpellUIManager.Initialise();
+        SpellUser.Initialise();
+
+        return true;
     }
 
-    public static SpellFightManager SpellFightManager => Instance.spellFightManager;
-    public static HandManager HandManager => Instance.handManager;
-    public static SpellManager SpellManager => Instance.spellManager;
-    public static DeckHandler DeckHandler => Instance.deckHandler;
-    
-    public static IEnumerator DrawWithDelay(float delay) {
+    public static IEnumerator DrawHandWithDelay(float delay)
+    {
         yield return new WaitForSeconds(delay);
-        DeckHandler.DrawHand();
+        CardManager.FillHand();
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            DeckHandler.DrawHand();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CardManager.FillHand();
         }
 
-        if(Input.GetKeyDown(KeyCode.Mouse0)) {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
             MouseHoverDetection.InteractWithHovered();
         }
     }

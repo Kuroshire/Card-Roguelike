@@ -6,24 +6,33 @@ using UnityEngine.Splines;
 public class HandCardsPositionHandler: MonoBehaviour {
 
     [SerializeField] private SplineContainer splineContainer;
+    [SerializeField] private Transform seletectedPosition;
     public float SplinePositionY => splineContainer.EvaluatePosition(0).y;
+    public float CardSelectedPositionY => seletectedPosition.position.y;
     [SerializeField] private float pushStrength = 0.05f;
-    [SerializeField] private HandManager handManager;
+    [SerializeField] private CardManager cardManager;
 
-    public int MaxHandSize => handManager.MaxHandSize;
-    public List<RuneView> Hand => handManager.Hand;
+    public int MaxHandSize => cardManager.MaxHandSize;
+    public List<RuneView> Hand => cardManager.CardsInHand;
 
 
-    void Start()
+    public void Initialise()
     {
         MouseHoverDetection.Instance.OnHoverChange += UpdateCardPositionAndOrder;
-        handManager.OnHandChange += UpdateCardPositionAndOrder;
+        cardManager.OnHandChanges += UpdateCardPositionAndOrder;
+        cardManager.OnDrawCard += UpdateHandPosition;
     }
 
-    
+
     #region Card Position Update
 
-    private void UpdateCardPositionAndOrder() {
+    public void UpdateHandPosition<T>(T _)
+    {
+        UpdateCardPositionAndOrder();
+    }
+
+    private void UpdateCardPositionAndOrder()
+    {
         UpdateCardOrder();
         UpdateCardPositions();
     }
@@ -47,6 +56,10 @@ public class HandCardsPositionHandler: MonoBehaviour {
         int hoveredCardIndex = Hand.FindIndex((card) => card == (RuneView) MouseHoverDetection.CurrentHover);
 
         for(int i = 0; i < Hand.Count; i++) {
+            if (Hand[i] == null)
+            {
+                Debug.Log("this card was destroyed already: " + i);
+            }
             float p = firstCardPosition + i * cardSpacing;
 
             // Apply "push" effect if there's a selected card
