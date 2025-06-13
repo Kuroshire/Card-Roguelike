@@ -18,25 +18,24 @@ public class AttackWithSpellButton : MonoBehaviour
     private string defaultMessage;
     private bool IsTargeting => targetSelector.IsTargeting;
 
-    void Start()
-    {
-        Initialise();
-    }
-
-    public void Initialise()
+    void Awake()
     {
         defaultMessage = buttonText.text;
-
-        turnBasedFight.OnFightStart += SetButtonActive;
-        turnBasedFight.OnCurrentFighterChange += SetButtonActive;
         targetSelector.OnTargetConfirmed += AttackSelectedTarget;
 
-        turnBasedFight.OnFightOver +=
-            _ => gameObject.SetActive(false);
-
-        gameObject.SetActive(false);
+        TurnBasedEvents.OnFightStart += SetButtonActive;
+        TurnBasedEvents.OnCurrentFighterChange += SetButtonActive;
+        TurnBasedEvents.OnFightOver += TurnOff;
     }
-    
+
+
+    private void OnDestroy()
+    {
+        TurnBasedEvents.OnFightStart -= SetButtonActive;
+        TurnBasedEvents.OnCurrentFighterChange -= SetButtonActive;
+        TurnBasedEvents.OnFightOver -= TurnOff;
+    }
+
     //used when button is pressed.
     public void FighterAttackAction()
     {
@@ -62,22 +61,31 @@ public class AttackWithSpellButton : MonoBehaviour
     }
 
     //This is a default action the player can do
-    private void AttackSelectedTarget(IFighter target) {
+    private void AttackSelectedTarget(IFighter target)
+    {
         IFighter currentFighter = FightSystemManager.TurnBasedFight.CurrentFighter;
-        
-        if (CheckValidity(currentFighter, true)) {
+
+        if (CheckValidity(currentFighter, true))
+        {
             spellUser.UseSpellOn(target);
         }
     }
 
     private void SetButtonActive() {
+        Debug.Log("set Active");
         IFighter currentFighter = FightSystemManager.TurnBasedFight.CurrentFighter;
         bool isPlayerFighter = CheckValidity(currentFighter);
         gameObject.SetActive(isPlayerFighter);
         SetButtonText();
     }
+    
+    void TurnOff(TeamEnum team = TeamEnum.None)
+    {
+        gameObject.SetActive(false);
+    }
 
-    private void SetButtonText() {
+    private void SetButtonText()
+    {
         buttonText.text = IsTargeting ? cancelMessage : defaultMessage;
     }
 

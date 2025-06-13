@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using PlasticGui.WorkspaceWindow;
 
-public class TurnBasedFight: MonoBehaviour
+public class TurnBasedFight : MonoBehaviour
 {
     [Header("Referred Systems")]
     [SerializeField] private FighterHandler fighterHandler;
@@ -28,13 +27,8 @@ public class TurnBasedFight: MonoBehaviour
     public List<IFighter> AllFighters => fighterHandler.AllFighters;
     #endregion
 
-    // --- Events ---
-    public event Action OnTurnStart, OnTurnEnd;
-    public event Action OnCurrentFighterChange;
-    public event Action OnFightStart;
-    public event Action<TeamEnum> OnFightOver;
-
-    public void PrepareFight(FightSettings settings) {
+    public void PrepareFight(FightSettings settings)
+    {
         fighterHandler.PrepareFighters(settings.amountOfPlayers, settings.amountOfEnemies);
         // amountOfPlayers = settings.amountOfPlayers;
         // amountOfEnemies = settings.amountOfEnemies;
@@ -49,7 +43,8 @@ public class TurnBasedFight: MonoBehaviour
             throw new Exception("cannot start fight before Instantiation...");
         }
 
-        if(isFightOnGoing) {
+        if (isFightOnGoing)
+        {
             Debug.Log("fight already started...");
             return;
         }
@@ -58,88 +53,103 @@ public class TurnBasedFight: MonoBehaviour
         StartCoroutine(StartFightCoroutine());
     }
 
-    private void EndTurn(IFighter fighter) {
-        if(fighter == CurrentFighter) {
+    private void EndTurn(IFighter fighter)
+    {
+        if (fighter == CurrentFighter)
+        {
             currentTurnFinished = true;
         }
     }
 
-    private void EndFight() {
+    private void EndFight()
+    {
         Debug.Log("Fight is over !");
         isFightOnGoing = false;
         isInitialized = false;
 
         UnbindEndTurn();
 
-        OnFightOver?.Invoke(WinningTeam);
+        TurnBasedEvents.OnFightOver?.Invoke(WinningTeam);
     }
 
-    private void AssignEndTurn() {
-        foreach(IFighter fighter in AllFighters) {
+    private void AssignEndTurn()
+    {
+        foreach (IFighter fighter in AllFighters)
+        {
             fighter.OnFighterEndTurn += EndTurn;
         }
     }
 
-    private void UnbindEndTurn() {
-        foreach(IFighter fighter in AllFighters) {
+    private void UnbindEndTurn()
+    {
+        foreach (IFighter fighter in AllFighters)
+        {
             fighter.OnFighterEndTurn -= EndTurn;
         }
     }
 
     #region FIGHT COROUTINES
 
-    public IEnumerator StartFightCoroutine() {
+    public IEnumerator StartFightCoroutine()
+    {
         yield return StartCoroutine(FightEntranceCoroutine());
         yield return StartCoroutine(FightLoop());
         yield return StartCoroutine(EndFightCoroutine());
     }
 
-    private IEnumerator FightEntranceCoroutine() {
-        UIManager.Initialize();
+    private IEnumerator FightEntranceCoroutine()
+    {
+        // UIManager.Initialize();
 
         fighterHandler.MovePlayersIntoFight();
         yield return new WaitForSeconds(fighterHandler.TimeToMoveIntoFight + .1f);
 
         Debug.Log("starting fight...");
-        OnFightStart?.Invoke();
+        TurnBasedEvents.OnFightStart?.Invoke();
     }
 
-    private IEnumerator FightLoop() {
+    private IEnumerator FightLoop()
+    {
         isFightOnGoing = true;
 
-        while(IsFightOver() == false) {
+        while (IsFightOver() == false)
+        {
             //Find current fighter
             CurrentFighter = fighterHandler.GetNextFighter(CurrentFighter);
-            OnCurrentFighterChange?.Invoke();
+            TurnBasedEvents.OnCurrentFighterChange?.Invoke();
 
             currentTurnFinished = false;
-            OnTurnStart?.Invoke();
+            TurnBasedEvents.OnTurnStart?.Invoke();
             yield return new WaitForSeconds(startOfTurnWaitTime);
 
             //Wait for player action
             yield return new WaitUntil(() => currentTurnFinished);
 
-            OnTurnEnd?.Invoke();
+            TurnBasedEvents.OnTurnEnd?.Invoke();
             yield return new WaitForSeconds(endOfTurnWaitTime);
         }
     }
 
-    private IEnumerator EndFightCoroutine() {
+    private IEnumerator EndFightCoroutine()
+    {
         Debug.Log("End Of Fight !");
         yield return new WaitForSeconds(onFightEndWaitTime);
         EndFight();
     }
 
-    private bool IsFightOver() {
+    private bool IsFightOver()
+    {
 
         bool hasMonsterLost = fighterHandler.MonsterTeam.IsTeamDead();
         bool hasPlayerLost = fighterHandler.PlayerTeam.IsTeamDead();
 
-        if(hasPlayerLost) {
+        if (hasPlayerLost)
+        {
             WinningTeam = TeamEnum.Enemy;
             return true;
         }
-        if(hasMonsterLost) {
+        if (hasMonsterLost)
+        {
             WinningTeam = TeamEnum.Player;
             return true;
         }

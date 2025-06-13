@@ -18,12 +18,22 @@ public class MonsterFighter: IFighter {
     void Start()
     {
         SetTurnsLeft(turnsBetweenAttacks);
-        FightSystemManager.TurnBasedFight.OnCurrentFighterChange += AutomaticAttackAction;
         OnFighterDeath += DeathBehaviour;
 
     }
 
-    public void SetTurnsLeft(int turnsLeft) {
+    void OnEnable()
+    {
+        TurnBasedEvents.OnCurrentFighterChange += AutomaticAttackAction;
+    }
+
+    void OnDisable()
+    {
+        TurnBasedEvents.OnCurrentFighterChange -= AutomaticAttackAction;
+    }
+
+    public void SetTurnsLeft(int turnsLeft)
+    {
         this.turnsLeft = turnsLeft;
         OnTurnsLeftUpdate?.Invoke();
     }

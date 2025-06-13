@@ -7,8 +7,6 @@ public class FightSystemUIManager : MonoBehaviour {
     public void Initialize()
     {
         endOfFightScreen.TurnOff();
-        endOfFightScreen.SetActionOnFightOver(FightSystemManager.TurnBasedFight);
-
         // startOfFightScreen.TurnOn();
     }
 }

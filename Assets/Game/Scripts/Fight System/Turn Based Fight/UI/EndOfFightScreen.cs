@@ -11,9 +11,14 @@ public class EndOfFightScreen : MonoBehaviour
         TurnOff();
     }
 
-    public void SetActionOnFightOver(TurnBasedFight turnBasedFight)
+    void OnEnable()
     {
-        turnBasedFight.OnFightOver += ActivateEndOfFight;
+        TurnBasedEvents.OnFightOver += ActivateEndOfFight;
+    }
+
+    void OnDisable()
+    {
+        TurnBasedEvents.OnFightOver -= ActivateEndOfFight;
     }
 
     public void ActivateEndOfFight(TeamEnum winners) {

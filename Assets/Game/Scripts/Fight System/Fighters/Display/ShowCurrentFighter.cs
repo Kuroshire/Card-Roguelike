@@ -4,18 +4,30 @@ public class ShowCurrentFighter : MonoBehaviour
 {
     private TurnBasedFight fightHandler;
 
+    void Awake()
+    {
+        TurnBasedEvents.OnCurrentFighterChange += UpdateCurrentFighter;
+        TurnBasedEvents.OnFightOver += TurnOff;
+    }
+
     void Start()
     {
         fightHandler = FightSystemManager.TurnBasedFight;
-        fightHandler.OnCurrentFighterChange += UpdateCurrentFighter;
-        fightHandler.OnFightOver += TurnOff;
         
         TurnOn();
     }
 
+    void OnDestroy()
+    {
+        TurnBasedEvents.OnCurrentFighterChange -= UpdateCurrentFighter;
+        TurnBasedEvents.OnFightOver -= TurnOff;
+    }
 
-    public void UpdateCurrentFighter() {
-        if(fightHandler.CurrentFighter == null) {
+
+    public void UpdateCurrentFighter()
+    {
+        if (fightHandler.CurrentFighter == null)
+        {
             TurnOff();
             return;
         }

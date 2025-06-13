@@ -6,18 +6,28 @@ public class FollowCurrentFighter : MonoBehaviour
 
     [SerializeField] private GameObject[] children;
 
+    void Awake()
+    {
+        TurnBasedEvents.OnFightStart += TurnOn;
+        TurnBasedEvents.OnFightOver += TurnOff;
+        TurnBasedEvents.OnCurrentFighterChange += UpdateCurrentFighter;
+    }
+
     void Start()
     {
         turnBasedFight = FightSystemManager.TurnBasedFight;
-
-        turnBasedFight.OnFightStart += TurnOn;
-        turnBasedFight.OnFightOver += TurnOff;
-        turnBasedFight.OnCurrentFighterChange += UpdateCurrentFighter;
-        
         TurnOff();
     }
 
-    public void UpdateCurrentFighter() {
+    void OnDestroy()
+    {
+        TurnBasedEvents.OnFightStart -= TurnOn;
+        TurnBasedEvents.OnFightOver -= TurnOff;
+        TurnBasedEvents.OnCurrentFighterChange -= UpdateCurrentFighter;
+    }
+
+    public void UpdateCurrentFighter()
+    {
         transform.position = turnBasedFight.CurrentFighterPosition;
     }
 
